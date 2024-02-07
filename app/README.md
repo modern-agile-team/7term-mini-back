@@ -6,7 +6,6 @@
 
 ## Branch Strategy
 
-
 **이슈 생성 시 `Assignees`, `Labels`, `Project` 를 꼭 설정해주세요**
 
 ### Default Branch
@@ -56,6 +55,3 @@ Issue 생성 시 action bot 이 아래처럼 comment 를 남깁니다.
 | test     | 테스트코드 관련 작업                 |
 | deploy   | 배포 관련 작업                       |
 | setting  | 세팅 관련 작업                       |
-
-
-
