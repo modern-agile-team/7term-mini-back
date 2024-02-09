@@ -19,9 +19,9 @@ export default {
       res.json(response);
     },
 
-    getBoard: async (req, res) => {
+    findOneBoardWithNicknameAndLoveCount: async (req, res) => {
       const instance = new BoardService(req);
-      const response = await instance.getBoard();
+      const response = await instance.findOneBoardWithNicknameAndLoveCount();
 
       response.error
         ? res.status(response.statusCode).json(response)

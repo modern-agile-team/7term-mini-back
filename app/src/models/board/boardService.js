@@ -53,13 +53,12 @@ export default class BoardService {
       content
     );
 
-    console.log(response[0].insertId);
+    const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
+      response[0].insertId
+    );
+    console.log(newBoard[0][0]);
 
-    const get = await BoardRepository.getBoard(response[0].insertId);
-    console.log(get[0][0]);
-    console.log(new Date());
-
-    if (response[0].affectedRows) return {message: "Created", statusCode: 201};
+    if (newBoard[0]) return {statusCode: 201, board: newBoard[0][0]};
   }
 
   async deleteBoard() {
@@ -82,11 +81,14 @@ export default class BoardService {
     }
   }
 
-  async getBoard() {
+  async findOneBoardWithNicknameAndLoveCount() {
     // console.log(this.params);
     const boardNo = this.params.boardNo;
-    const key = await BoardRepository.getBoard(boardNo);
-    const [rows, fields] = await BoardRepository.getBoard(boardNo);
+    const key = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
+      boardNo
+    );
+    const [rows, fields] =
+      await BoardRepository.findOneBoardWithNicknameAndLoveCount(boardNo);
 
     if (!rows[0].no) {
       return {

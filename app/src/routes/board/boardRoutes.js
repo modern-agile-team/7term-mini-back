@@ -10,7 +10,7 @@ router.post("/", ctrl.process.createBoard);
 router.delete("/:boardNo", ctrl.process.deleteBoard);
 
 //보드 조회
-router.get("/:boardNo", ctrl.process.getBoard);
+router.get("/:boardNo", ctrl.process.findOneBoardWithNicknameAndLoveCount);
 
 //보드 수정
 router.put("/:boardNo", ctrl.process.upadateBoard);
