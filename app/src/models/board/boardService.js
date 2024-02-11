@@ -14,35 +14,22 @@ export default class BoardService {
     const userNo = this.headers.user_no;
     const {categoryNo, content} = this.body;
 
-    if (!userNo) {
+    let error = await BoardRepository.isUserNo(userNo);
+
+    if (!error[0][0]) {
       return {
         error: "Bad Request",
-        message: "생성시 유저 고유 번호가 있어야합니다.",
+        message: "해당 유저 고유번호는 등록되어있지 않습니다.",
         statusCode: 400,
       };
     }
 
-    if (!categoryNo) {
-      return {
-        error: "Bad Request",
-        message: "생성시 카테고리 번호가 있어야합니다.",
-        statusCode: 400,
-      };
-    }
+    error = await BoardRepository.isCategoryNo(categoryNo);
 
-    if (!content) {
+    if (!error[0][0]) {
       return {
         error: "Bad Request",
-        message: "생성시 게시글의 내용이 있어야합니다.",
-        statusCode: 400,
-      };
-    }
-
-    if ([...content].length > 250) {
-      //이모지를 세려면 이렇게 사용해야함..
-      return {
-        error: "Bad Request",
-        message: "생성시 게시글의 내용은 250자 이내여야 합니다.",
+        message: "해당 카테고리 번호는 등록되어있지 않습니다.",
         statusCode: 400,
       };
     }
@@ -56,7 +43,7 @@ export default class BoardService {
     const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
       response[0].insertId
     );
-    console.log(newBoard[0][0]);
+    // console.log(newBoard[0][0]);
 
     if (newBoard[0]) return {statusCode: 201, board: newBoard[0][0]};
   }

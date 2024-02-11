@@ -33,4 +33,16 @@ export default class BoardRepository {
       return {meessage: "정상적으로 수정됐습니다."};
     }
   }
+
+  static isUserNo(userNo) {
+    const query = "SELECT no FROM user WHERE no = ?";
+
+    return db.query(query, [userNo]);
+  }
+
+  static isCategoryNo(categoryNo) {
+    const query = "SELECT no FROM category WHERE no = ?";
+
+    return db.query(query, [categoryNo]);
+  }
 }

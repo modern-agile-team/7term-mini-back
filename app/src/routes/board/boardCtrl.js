@@ -1,10 +1,26 @@
 "use strict";
 import BoardService from "../../models/board/boardservice.js";
+import {validationResult} from "express-validator";
 
 export default {
   process: {
-    createBoard: async (req, res) => {
+    appendBoard: async (req, res) => {
       // console.log(req.headers);
+      // console.log(req);
+
+      // console.log(req.headers);
+      // console.log(req.body);
+      const error = validationResult(req).errors[0];
+
+      // console.log(error);
+
+      if (error) {
+        res
+          .status(400)
+          .json({error: "Bad Request", message: error.msg, statusCode: 400});
+
+        return 0;
+      }
 
       const instance = new BoardService(req);
       const response = await instance.appendBoard();
@@ -35,4 +51,9 @@ export default {
       res.json(response);
     },
   },
+  // check: {
+  //   checkBoardNo: (req, res) => {
+  //     body("category").isEmpty();
+  //   },
+  // },
 };
