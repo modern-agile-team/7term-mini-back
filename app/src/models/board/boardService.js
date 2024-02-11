@@ -71,9 +71,7 @@ export default class BoardService {
   async findOneBoardWithNicknameAndLoveCount() {
     // console.log(this.params);
     const boardNo = this.params.boardNo;
-    const key = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
-      boardNo
-    );
+
     const [rows, fields] =
       await BoardRepository.findOneBoardWithNicknameAndLoveCount(boardNo);
 

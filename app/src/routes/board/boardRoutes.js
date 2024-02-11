@@ -29,7 +29,15 @@ router.post(
 router.delete("/:boardNo", ctrl.process.deleteBoard);
 
 //보드 조회
-router.get("/:boardNo", ctrl.process.findOneBoardWithNicknameAndLoveCount);
+router.get(
+  "/:boardNo",
+  param("boardNo")
+    .notEmpty()
+    .withMessage("조회할 게시글의 번호가 필요합니다.")
+    .isInt()
+    .withMessage("조회할 게시글의 번호는 자연수여야합니다."),
+  ctrl.process.findOneBoardWithNicknameAndLoveCount
+);
 
 //보드 수정
 router.put("/:boardNo", ctrl.process.upadateBoard);

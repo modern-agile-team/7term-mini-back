@@ -36,6 +36,18 @@ export default {
     },
 
     findOneBoardWithNicknameAndLoveCount: async (req, res) => {
+      // console.log(validationResult(req));
+
+      const error = validationResult(req).errors[0];
+
+      if (error) {
+        res
+          .status(400)
+          .json({error: "Bad Request", message: error.msg, statusCode: 400});
+
+        return 0;
+      }
+
       const instance = new BoardService(req);
       const response = await instance.findOneBoardWithNicknameAndLoveCount();
 
