@@ -20,24 +20,28 @@ export default class BoardRepository {
   static findOneBoardWithNicknameAndLoveCount(boardNo) {
     // console.log(boardNo);
     const query =
-      "SELECT b.no, b.user_no, u.nickname, b.content, b.created_at, b.updated_at, COUNT(case WHEN l.board_no = ? then 0 end) as love_count FROM board as b LEFT JOIN user as u ON b.user_no = u.no LEFT JOIN board_love as l ON b.no = l.board_no WHERE b.no = ?;";
+      "SELECT b.no, b.category_no, b.user_no, u.nickname, b.content, b.created_at, b.updated_at, COUNT(case WHEN l.board_no = ? then 0 end) as love_count FROM board as b LEFT JOIN user as u ON b.user_no = u.no LEFT JOIN board_love as l ON b.no = l.board_no WHERE b.no = ?;";
 
     return db.query(query, [boardNo, boardNo]);
   }
 
-  static updateBoard(boardNo, content) {
-    const query = "UPDATE board as b SET content = ? WHERE b.no = ?;";
-    const response = db.query(query, [content, boardNo]);
+  static async updateBoard(boardNo, categoryNo, content) {
+    const query =
+      "UPDATE board as b SET category_no = ?, content = ? WHERE b.no = ?;";
 
-    if (response[0].affectedRows) {
-      return {meessage: "정상적으로 수정됐습니다."};
-    }
+    return db.query(query, [categoryNo, content, boardNo]);
   }
 
   static isUserNo(userNo) {
     const query = "SELECT no FROM user WHERE no = ?";
 
     return db.query(query, [userNo]);
+  }
+
+  static isBoardNo(boardNo) {
+    const query = "SELECT no FROM board WHERE no = ?";
+
+    return db.query(query, [boardNo]);
   }
 
   static isCategoryNo(categoryNo) {

@@ -56,7 +56,7 @@ export default class BoardService {
     if (response[0].affectedRows) {
       return {message: "정상적으로 삭제됐습니다.", statusCode: 200};
     } else if (response[0].affectedRows === 0) {
-      return {message: "해당 게시물은 없습니다.", statusCode: 11};
+      return {message: "해당 게시물은 없습니다.", statusCode: 400};
     }
   }
 
@@ -82,14 +82,34 @@ export default class BoardService {
     // console.log(this.params.boardNo);
     // console.log(this.body.content);
     const boardNo = this.params.boardNo;
-    const content = this.body.content;
-    let response = {};
-    if (!content) {
-      response = {message: "수정할 내용을 입력해 주세요"};
-    }
-    response = await BoardRepository.updateBoard(boardNo, content);
+    const {categoryNo, content} = this.body;
 
-    // const response = await instance.updateBoard();
-    return response;
+    let error = await BoardRepository.isBoardNo(boardNo);
+
+    if (!error[0][0]) {
+      return {
+        error: "Bad Request",
+        message: "해당 게시글 번호는 등록되어있지 않습니다.",
+        statusCode: 400,
+      };
+    }
+
+    error = await BoardRepository.isCategoryNo(categoryNo);
+
+    if (!error[0][0]) {
+      return {
+        error: "Bad Request",
+        message: "해당 카테고리 번호는 등록되어있지 않습니다.",
+        statusCode: 400,
+      };
+    }
+
+    await BoardRepository.updateBoard(boardNo, categoryNo, content);
+
+    const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
+      boardNo
+    );
+
+    return {statusCode: 201, board: newBoard[0][0]};
   }
 }

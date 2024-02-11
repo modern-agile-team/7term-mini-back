@@ -42,7 +42,7 @@ export default {
       const instance = new BoardService(req);
       const response = await instance.deleteBoard();
 
-      res.json(response);
+      res.statusCode(response.statusCode).json(response);
     },
 
     findOneBoardWithNicknameAndLoveCount: async (req, res) => {
@@ -66,11 +66,21 @@ export default {
         : res.status(response.statusCode).json(response.board);
     },
 
-    upadateBoard: async (req, res) => {
+    updateBoard: async (req, res) => {
+      const error = validationResult(req).errors[0];
+
+      if (error) {
+        res
+          .status(400)
+          .json({error: "Bad Request", message: error.msg, statusCode: 400});
+
+        return 0;
+      }
+
       const instace = new BoardService(req);
       const response = await instace.updateBoard();
 
-      res.json(response);
+      res.status(response.statusCode).json(response);
     },
   },
   // check: {

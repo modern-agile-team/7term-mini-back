@@ -48,6 +48,24 @@ router.get(
 );
 
 //보드 수정
-router.put("/:boardNo", ctrl.process.upadateBoard);
+router.put(
+  "/:boardNo",
+  param("boardNo")
+    .notEmpty()
+    .withMessage("조회할 게시글의 번호가 필요합니다.")
+    .isInt()
+    .withMessage("조회할 게시글의 번호는 자연수여야합니다."),
+  body("categoryNo")
+    .notEmpty()
+    .withMessage("카테고리 번호는 비어둘 수 없습니다.")
+    .isInt()
+    .withMessage("카테고리 번호는 자연수를 입력해야합니다."),
+  body("content")
+    .notEmpty()
+    .withMessage("내용을 입력해주세요")
+    .isLength({max: 250})
+    .withMessage("내용은 250자 이내여야 합니다."),
+  ctrl.process.updateBoard
+);
 
 export default router;
