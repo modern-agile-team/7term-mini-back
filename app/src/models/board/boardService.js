@@ -51,14 +51,6 @@ export default class BoardService {
   async deleteBoard() {
     const boardNo = this.params.boardNo;
 
-    if (!boardNo) {
-      return {
-        error: "Bad Request",
-        message: "삭제할 게시글 번호가 있어야 합니다.",
-        statusCode: 400,
-      };
-    }
-
     const response = await BoardRepository.deleteBoard(boardNo);
 
     if (response[0].affectedRows) {

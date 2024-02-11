@@ -26,7 +26,15 @@ router.post(
 );
 
 //보드 삭제
-router.delete("/:boardNo", ctrl.process.deleteBoard);
+router.delete(
+  "/:boardNo",
+  param("boardNo")
+    .notEmpty()
+    .withMessage("삭제할 게시글의 번호가 필요합니다.")
+    .isInt()
+    .withMessage("삭제할 게시글의 번호는 자연수여야합니다."),
+  ctrl.process.deleteBoard
+);
 
 //보드 조회
 router.get(
