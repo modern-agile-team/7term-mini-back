@@ -2,7 +2,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import home from "./src/routes/auth/userRoutes.js"
+import home from "./src/routes/user/userRoutes.js"
 
 
 const app = express();

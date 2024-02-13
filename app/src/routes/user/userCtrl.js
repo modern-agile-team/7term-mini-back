@@ -1,6 +1,6 @@
 "use strict";
 
-import User from "../../models/auth/userService.js"
+import User from "../../models/user/userService.js"
 
 const process = {
     createUser : async (req, res) => {
