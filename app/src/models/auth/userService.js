@@ -1,6 +1,6 @@
 "use strict";
 
-import UserStorage from "./authRepository.js"
+import UserStorage from "./userRepository.js"
 
 class User {
     constructor(req) {
@@ -32,7 +32,7 @@ class User {
         if(!userInfo[0]){
             try {
                     const response = await UserStorage.save(clientInfo);
-                    return { statusCode : 201, message : "회원가입이 정상적으로 됐습니다."};
+                    return { statusCode : 201, message : "회원가입에 성공하였습니다."};
                 } catch (err) {
                     return { error : 'Internal Server Error', message : "내부 서버 오류", statusCode : 500};   
                 }

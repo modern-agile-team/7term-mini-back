@@ -1,7 +1,7 @@
 "use strict";
 
 import express from "express";
-import ctrl from "./authCtrl.js"
+import ctrl from "./userCtrl.js"
 
 
 const router = express.Router();
