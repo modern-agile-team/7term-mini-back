@@ -8,7 +8,7 @@ class UserStorage {
     static async check(userId, userNickName){
         const query = "SELECT * FROM user WHERE id = ? OR nickname = ?;";
         const [raws, fields] = await db.query(query, [userId, userNickName]);
-        return raws
+        return raws;
     }
 
     static async save (userInfo){
