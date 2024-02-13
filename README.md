@@ -49,7 +49,7 @@ Issue 생성 시 action bot 이 아래처럼 comment 를 남깁니다.
 | db       | 데이터베이스 관련 작업               |
 | delete   | 코드 삭제                            |
 | doc      | 문서 작업                            |
-| feat     | 새로운 기능 추가                     |
+| feature  | 새로운 기능 추가                     |
 | modify   | 코드 수정(기능상의 수정이 있는 경우) |
 | refactor | 코드 수정(기능상의 수정이 없는 경우) |
 | test     | 테스트코드 관련 작업                 |
