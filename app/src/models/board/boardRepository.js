@@ -2,9 +2,6 @@ import db from "../../config/db.js";
 
 export default class BoardRepository {
   static apppendBoard(userNo, categoryNo, content) {
-    // console.log(userNo);
-    // console.log(categoryNo);
-    // console.log(content);
     const query =
       "INSERT INTO board(user_no, category_no, content) VALUES (?, ?, ?);";
 

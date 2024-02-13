@@ -43,9 +43,8 @@ export default class BoardService {
     const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
       response[0].insertId
     );
-    // console.log(newBoard[0][0]);
 
-    if (newBoard[0]) return {statusCode: 201, board: newBoard[0][0]};
+    return {statusCode: 201, board: newBoard[0][0]};
   }
 
   async deleteBoard() {

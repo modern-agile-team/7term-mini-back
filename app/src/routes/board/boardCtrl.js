@@ -5,14 +5,7 @@ import {validationResult} from "express-validator";
 export default {
   process: {
     appendBoard: async (req, res) => {
-      // console.log(req.headers);
-      // console.log(req);
-
-      // console.log(req.headers);
-      // console.log(req.body);
       const error = validationResult(req).errors[0];
-
-      // console.log(error);
 
       if (error) {
         res
