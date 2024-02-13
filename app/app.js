@@ -13,4 +13,6 @@ app.use(
   })
 );
 
+app.use("/mainpage", board);
+
 export default app;
