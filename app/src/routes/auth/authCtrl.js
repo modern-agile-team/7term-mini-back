@@ -1,11 +1,11 @@
 "use strict";
 
-import User from "../../models/auth/authService.js"
+import Auth from "../../models/auth/authService.js"
 
 const process = {
     login : async (req, res) => {
-        const user = new User(req);
-        const response =  await user.login();
+        const auth = new Auth(req);
+        const response =  await auth.login();
         return res.json(response).status(response.statusCode);
     }
 };

@@ -4,11 +4,16 @@ import db from "../../config/db.js";
 // import { resolve }  from "path"
 // import { reject, log } from "async";
 
-class UserStorage {
+class AuthStorage {
     static async check(userId, userPassWord){
         const query = "SELECT * FROM user WHERE id = ? AND password = ?;";
         const [rows, fields] = await db.query(query, [userId, userPassWord]);
         return rows;
     }
+    static async tokenSave(userNo, userRefreshToken){
+        const query = "INSERT INTO token (`user_no`, `refresh_token`) VALUES (?, ?)";
+        const [rows, fields] = await db.query(query, [userNo, userRefreshToken]);
+        return rows;
+    }
 }
-export default UserStorage;
+export default AuthStorage;
