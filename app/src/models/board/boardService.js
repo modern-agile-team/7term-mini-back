@@ -50,13 +50,19 @@ export default class BoardService {
   async deleteBoard() {
     const boardNo = this.params.boardNo;
 
+    const error = await BoardRepository.isBoardNo(boardNo);
+
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 번호의 게시글은 등록되어있지 않습니다.",
+        statusCode: 404,
+      };
+    }
+
     const response = await BoardRepository.deleteBoard(boardNo);
 
-    if (response[0].affectedRows) {
-      return {message: "정상적으로 삭제됐습니다.", statusCode: 200};
-    } else if (response[0].affectedRows === 0) {
-      return {message: "해당 게시물은 없습니다.", statusCode: 400};
-    }
+    return {message: "정상적으로 삭제됐습니다.", statusCode: 200};
   }
 
   async findOneBoardWithNicknameAndLoveCount() {
@@ -88,7 +94,7 @@ export default class BoardService {
     if (!error[0][0]) {
       return {
         error: "Bad Request",
-        message: "해당 게시글 번호는 등록되어있지 않습니다.",
+        message: "해당 번호의 게시글은 등록되어있지 않습니다.",
         statusCode: 400,
       };
     }

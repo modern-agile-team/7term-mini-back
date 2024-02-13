@@ -35,7 +35,7 @@ export default {
       const instance = new BoardService(req);
       const response = await instance.deleteBoard();
 
-      res.statusCode(response.statusCode).json(response);
+      res.status(response.statusCode).json(response);
     },
 
     findOneBoardWithNicknameAndLoveCount: async (req, res) => {
