@@ -6,17 +6,9 @@ import db from "../../config/db.js";
 
 class UserStorage {
     static async check(userId, userPassWord){
-        const query = "SELECT * FROM user WHERE id = ? OR password = ?;";
-        const [raws, fields] = await db.query(query, [userId, userPassWord]);
-        return raws;
-    }
-
-    static async save (userInfo){
-        const query = "INSERT INTO user (`nickname`, `id`, `password`, `email`) VALUES (?, ?, ?, ?);";
-        const [raws, fields] = await db.query(query,
-            [userInfo.nickname, userInfo.id, userInfo.password, userInfo.email]
-            );
-        return raws;
+        const query = "SELECT * FROM user WHERE id = ? AND password = ?;";
+        const [rows, fields] = await db.query(query, [userId, userPassWord]);
+        return rows;
     }
 }
 export default UserStorage;

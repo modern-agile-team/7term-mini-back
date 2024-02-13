@@ -2,7 +2,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-
+import home from "./src/routes/auth/authRoutes.js"
 const app = express();
 
 dotenv.config();
@@ -12,5 +12,10 @@ app.use(
     origin: "*",
   })
 );
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/auth", home);
 
 export default app;
