@@ -10,6 +10,5 @@ const db = mysql.createPool({
   database: process.env.DB_DATABASE,
   timezone: "Asia/Seoul",
 });
-// db.connect();
 
 export default db;
