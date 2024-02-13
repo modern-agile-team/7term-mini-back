@@ -5,12 +5,9 @@ export default class BoardService {
     this.body = data.body;
     this.params = data.params;
     this.headers = data.headers;
-    // console.log(data.headers["user-no"]);
   }
 
   async appendBoard() {
-    // console.log(this.headers.user_no);
-    // console.log(this.body);
     const userNo = this.headers.user_no;
     const {categoryNo, content} = this.body;
 
@@ -66,7 +63,6 @@ export default class BoardService {
   }
 
   async findOneBoardWithNicknameAndLoveCount() {
-    // console.log(this.params);
     const boardNo = this.params.boardNo;
 
     const [rows, fields] =
