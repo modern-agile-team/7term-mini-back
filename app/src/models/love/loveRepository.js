@@ -1,6 +1,6 @@
 "use strict";
 
-import db from "../../config/love/db.js";
+import db from "../../config/db.js";
 
 class LoveRepository {
   static getLove(userNo, boardNo) {
