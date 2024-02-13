@@ -18,9 +18,9 @@ export default class BoardService {
 
     if (!error[0][0]) {
       return {
-        error: "Bad Request",
+        error: "Not Found",
         message: "해당 유저 고유번호는 등록되어있지 않습니다.",
-        statusCode: 400,
+        statusCode: 404,
       };
     }
 
@@ -28,9 +28,9 @@ export default class BoardService {
 
     if (!error[0][0]) {
       return {
-        error: "Bad Request",
+        error: "Not Found",
         message: "해당 카테고리 번호는 등록되어있지 않습니다.",
-        statusCode: 400,
+        statusCode: 404,
       };
     }
 
@@ -75,7 +75,7 @@ export default class BoardService {
     if (!rows[0].no) {
       return {
         error: "Not Found",
-        message: "해당 번호의 게시물은 존재하지 않습니다.",
+        message: "해당 번호의 게시글은 등록되어있지 않습니다.",
         statusCode: 404,
       };
     }
@@ -93,9 +93,9 @@ export default class BoardService {
 
     if (!error[0][0]) {
       return {
-        error: "Bad Request",
+        error: "Not Found",
         message: "해당 번호의 게시글은 등록되어있지 않습니다.",
-        statusCode: 400,
+        statusCode: 404,
       };
     }
 
@@ -103,9 +103,9 @@ export default class BoardService {
 
     if (!error[0][0]) {
       return {
-        error: "Bad Request",
-        message: "해당 카테고리 번호는 등록되어있지 않습니다.",
-        statusCode: 400,
+        error: "Not Found",
+        message: "해당 번호의 카테고리는 등록되어있지 않습니다.",
+        statusCode: 404,
       };
     }
 
