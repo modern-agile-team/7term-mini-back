@@ -3,6 +3,12 @@ export default {
   process: {
     getUser: async (req, res) => {},
 
-    getPagesAndLoveCountAndCommentCount: async (req, res) => {},
+    getBoardsAndLoveCountAndCommentCount: async (req, res) => {
+      const instance = new MainpageService(req);
+
+      const response = await instance.getBoardsAndLoveCountAndCommentCount();
+
+      res.json(response);
+    },
   },
 };

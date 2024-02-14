@@ -4,4 +4,6 @@ import ctrl from "./mainpageCtrl.js";
 const router = express.Router();
 
 router.get("/", ctrl.process.getUser);
-router.get("/:pageNo", ctrl.process.getPagesAndLoveCountAndCommentCount);
+router.get("/:pageNo", ctrl.process.getBoardsAndLoveCountAndCommentCount);
+
+export default router;

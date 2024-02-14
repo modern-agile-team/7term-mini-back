@@ -1,17 +1,26 @@
-import MainpageRepository from "./mainpageRepository";
+import MainpageRepository from "./mainpageRepository.js";
 
 export default class MainpageService {
-    constructor(this) {
-        const headers = this.headers
-        const body = this.body
-        const params = this.params
-    }
+  constructor(data) {
+    this.headers = data.headers;
+    this.body = data.body;
+    this.params = data.params;
+  }
 
-    async getUserName() {
+  async getUserName() {}
 
-    }
+  async getBoardsAndLoveCountAndCommentCount() {
+    let pageNo = this.params.pageNo - 1;
+    const pages = this.body.pages;
 
-    async getPagesAndLoveCountAndCommentCount() {
+    pageNo = pages * pageNo;
 
-    }
+    const response =
+      await MainpageRepository.getBoardsAndLoveCountAndCommentCount(
+        pageNo,
+        pages
+      );
+
+    return response;
+  }
 }
