@@ -15,5 +15,10 @@ class AuthStorage {
         const [rows, fields] = await db.query(query, [userNo, userRefreshToken]);
         return rows;
     }
+    static async refreshTokenCheck(clientRefreshToken){
+        const query = "SELECT * FROM token WHERE refresh_token = ?;";
+        const [rows, fields] = await db.query(query, [clientRefreshToken]);
+        return rows;
+    }
 }
 export default AuthStorage;

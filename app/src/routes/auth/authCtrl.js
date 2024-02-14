@@ -7,6 +7,11 @@ const process = {
         const auth = new Auth(req);
         const response =  await auth.login();
         return res.json(response).status(response.statusCode);
+    },
+    access : async (req, res) => {
+        const auth = new Auth(req);
+        const response = await auth.access();
+        return res.json(response).status(response.statusCode);
     }
 };
 export default {
