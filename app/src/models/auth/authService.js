@@ -20,10 +20,10 @@ class Auth {
         if(!userInfo[0]){
             return { error : 'Bad Request', message : "유저 정보가 없습니다.", statusCode : 400};
         }
-        const userAccessToken = await JwtToken.createAccessToken({id : userInfo.id});
-        const userRefreshToken = await JwtToken.createRefreshToken({id : userInfo.id}); 
+        const userAccessToken = await JwtToken.createAccessToken({id : userInfo[0].id, no : userInfo[0].no});
+        const userRefreshToken = await JwtToken.createRefreshToken({id : userInfo[0].id, no : userInfo[0].no});
         const userTokenInfo = await AuthStorage.tokenSave(userInfo[0].no, userRefreshToken);
-        return { message : "로그인에 성공하였습니다.", accessToken: userAccessToken, refreshToken : userRefreshToken, userNickName : userInfo[0].nickname, statusCode : 200};
+        return { message : "로그인에 성공하였습니다.", accessToken: userAccessToken, refreshToken : userRefreshToken ,userNickName : userInfo[0].nickname, statusCode : 200};
     }
     async access(){
         const clientRefreshToken = this.headers;

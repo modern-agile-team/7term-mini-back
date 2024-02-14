@@ -1,16 +1,18 @@
 "use strict";
 import jwt from "jsonwebtoken";
 class JwtToken {
-    static async createAccessToken(id) {        
-        const accessToken = jwt.sign({id}, process.env.ACCESS_TOKEN_SECRET,{
+    static async createAccessToken(id) {
+        const accessToken = jwt.sign(id, process.env.ACCESS_TOKEN_SECRET,{
             expiresIn: "1m",
         })
+        console.log(jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)) 
         return accessToken;
     }
     static async createRefreshToken(id) {        
-        const refreshToken = jwt.sign({id}, process.env.REFRESH_TOKEN_SECRET,{
+        const refreshToken = jwt.sign(id, process.env.REFRESH_TOKEN_SECRET,{
             expiresIn: "24h"
         })
+        console.log(jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)) 
         return refreshToken;
     }
     static async verifyToken(token){
