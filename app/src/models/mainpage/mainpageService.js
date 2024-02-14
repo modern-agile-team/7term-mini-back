@@ -10,22 +10,26 @@ export default class MainpageService {
   async getUserName() {}
 
   async getBoardsAndLoveCountAndCommentCount() {
-    const pages = this.body.pages;
+    const numberBoardsYouWant = this.body.numberBoardsYouWant;
+    const categoryNo = this.body.categoryNo;
 
-    let pageNo = this.params.pageNo - 1;
-    let categoryNo = this.body.categoryNo;
+    let currentPageNumber = this.params.currentPageNumber - 1;
 
-    pageNo = pages * pageNo;
+    //쿼리를 위한 가공
+    currentPageNumber = currentPageNumber * numberBoardsYouWant;
 
     const [rows, fields] =
       await MainpageRepository.getBoardsAndLoveCountAndCommentCount(
-        pageNo,
-        pages,
+        currentPageNumber,
+        numberBoardsYouWant,
         categoryNo
       );
 
-    console.log(rows);
+    const boardsCount = await MainpageRepository.getBoardsCount(categoryNo);
 
-    return {statusCode: 201, board: rows};
+    const numberAllPages =
+      Math.ceil(boardsCount[0][0].board_count / numberBoardsYouWant) + 1;
+
+    return {statusCode: 201, board: rows, allPagesCount: numberAllPages};
   }
 }

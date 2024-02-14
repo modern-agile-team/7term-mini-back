@@ -28,16 +28,16 @@ export default class MainpageService {
   }
 
   static getBoardsCount(categoryNo) {
+    let where = "";
     if (categoryNo) {
-      where = `WHERE b.category_no = ${categoryNo}`;
+      where = `WHERE board.category_no = ${categoryNo}`;
     }
 
     const query = `
     SELECT count(*) AS board_count 
     FROM board
-    ${where}
-    ;`;
+    ${where};`;
 
-    return db.query(query, []);
+    return db.query(query);
   }
 }
