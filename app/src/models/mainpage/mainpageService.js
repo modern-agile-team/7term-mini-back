@@ -10,16 +10,23 @@ export default class MainpageService {
   async getUserName() {}
 
   async getBoardsAndLoveCountAndCommentCount() {
-    let pageNo = this.params.pageNo - 1;
     const pages = this.body.pages;
+
+    let pageNo = this.params.pageNo - 1;
+    let categoryNo = this.body.categoryNo;
 
     pageNo = pages * pageNo;
 
     const response =
       await MainpageRepository.getBoardsAndLoveCountAndCommentCount(
         pageNo,
-        pages
+        pages,
+        categoryNo
       );
+
+    response.pop();
+
+    console.log(response);
 
     return response;
   }
