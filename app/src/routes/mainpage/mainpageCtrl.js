@@ -8,7 +8,7 @@ export default {
 
       const response = await instance.getBoardsAndLoveCountAndCommentCount();
 
-      res.json(response);
+      res.status(response.statusCode).json(response);
     },
   },
 };

@@ -17,17 +17,15 @@ export default class MainpageService {
 
     pageNo = pages * pageNo;
 
-    const response =
+    const [rows, fields] =
       await MainpageRepository.getBoardsAndLoveCountAndCommentCount(
         pageNo,
         pages,
         categoryNo
       );
 
-    response.pop();
+    console.log(rows);
 
-    console.log(response);
-
-    return response;
+    return {statusCode: 201, board: rows};
   }
 }
