@@ -6,7 +6,7 @@ import ctrl from "./userCtrl.js"
 
 const router = express.Router();
 
-router.post("/register", ctrl.process.createUser);
+router.post("/users", ctrl.process.createUser);
 
 
 export default router;

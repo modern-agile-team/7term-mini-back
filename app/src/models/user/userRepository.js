@@ -5,16 +5,16 @@ import db from "../../config/db.js";
 // import { reject, log } from "async";
 
 class UserStorage {
-    static async check(userId, userNickName){
+    static async findUsers(id, nickName){
         const query = "SELECT * FROM user WHERE id = ? OR nickname = ?;";
-        const [rows, fields] = await db.query(query, [userId, userNickName]);
+        const [rows, fields] = await db.query(query, [id, nickName]);
         return rows;
     }
 
-    static async save (userInfo){
+    static async save (nickName, id, password, email){
         const query = "INSERT INTO user (`nickname`, `id`, `password`, `email`) VALUES (?, ?, ?, ?);";
         const [rows, fields] = await db.query(query,
-            [userInfo.nickname, userInfo.id, userInfo.password, userInfo.email]
+            [nickName, id, password, email]
             );
         return rows;
     }

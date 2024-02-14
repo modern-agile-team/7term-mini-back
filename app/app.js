@@ -20,6 +20,6 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", home);
+app.use("/", home);
 
 export default app;
