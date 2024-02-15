@@ -3,8 +3,8 @@ import MainpageRepository from "./mainpageRepository.js";
 export default class MainpageService {
   constructor(data) {
     this.headers = data.headers;
-    this.body = data.body;
     this.params = data.params;
+    this.query = data.query;
   }
 
   async getUserName() {
@@ -18,8 +18,8 @@ export default class MainpageService {
   }
 
   async getBoardsAndLoveCountAndCommentCount() {
-    const numberBoardsYouWant = this.body.numberBoardsYouWant;
-    const categoryNo = this.body.categoryNo;
+    const numberBoardsYouWant = Number(this.query.numberBoardsYouWant);
+    const categoryNo = Number(this.query.categoryNo);
 
     let currentPageNumber = this.params.currentPageNumber - 1;
 
@@ -38,6 +38,7 @@ export default class MainpageService {
         statusCode: 400,
       };
     }
+
     //쿼리를 위한 가공
     currentPageNumber = currentPageNumber * numberBoardsYouWant;
 
