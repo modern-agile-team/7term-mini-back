@@ -29,8 +29,12 @@ class CommentService {
       };
     }
 
-    await CommentRepository.addComments(boardNo, userNo, comments);
-    return {Statuscode: 201};
+    const response = await CommentRepository.addComments(
+      boardNo,
+      userNo,
+      comments
+    );
+    return {Statuscode: 201, response: response[0]};
   }
   async deleteComments() {
     const No = this.body.no;
@@ -43,7 +47,7 @@ class CommentService {
       };
     }
     await CommentRepository.deleteComments(No);
-    return {message: "댓글이 성공적으로 삭제됐습니다.", Status: 200};
+    return {message: "댓글이 성공적으로 삭제됐습니다.", Statuscode: 200};
   }
   async getComments() {
     const boardNo = this.body.board_no;
@@ -56,7 +60,7 @@ class CommentService {
       };
     }
     const [rows, fields] = await CommentRepository.getComments(boardNo);
-    return {Statuscode: 201, rows};
+    return {Statuscode: 200, rows};
   }
 }
 

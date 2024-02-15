@@ -13,7 +13,7 @@ const process = {
     }
     const comment = new CommentService(req);
     const response = await comment.addComments();
-    return res.json(response);
+    return res.status(response.Statuscode).json(response);
   },
   deleteComments: async (req, res) => {
     const error = validationResult(req).errors[0];
@@ -24,7 +24,7 @@ const process = {
     }
     const comment = new CommentService(req);
     const response = await comment.deleteComments();
-    return res.json(response);
+    return res.status(response.Statuscode).json(response);
   },
   getComments: async (req, res) => {
     const error = validationResult(req).errors[0];
@@ -35,7 +35,7 @@ const process = {
     }
     const comment = new CommentService(req);
     const response = await comment.getComments();
-    return res.json(response);
+    return res.status(response.Statuscode).json(response);
   },
 };
 
