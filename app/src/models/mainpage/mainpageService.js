@@ -30,12 +30,12 @@ export default class MainpageService {
     );
 
     if (boardsCount[0][0].board_count === 0) {
-      return {allPagesCount: numberAllPages, statusCode: 201};
+      return {allPagesCount: numberAllPages, statusCode: 200};
     } else if (currentPageNumber + 1 > numberAllPages) {
       return {
         error: "Bad Request",
         message: "해당 페이지는 없습니다.",
-        statusCode: 400,
+        statusCode: 404,
       };
     }
 
@@ -49,6 +49,6 @@ export default class MainpageService {
         categoryNo
       );
 
-    return {board: rows, allPagesCount: numberAllPages, statusCode: 201};
+    return {board: rows, allPagesCount: numberAllPages, statusCode: 200};
   }
 }
