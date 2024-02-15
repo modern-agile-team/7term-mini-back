@@ -19,17 +19,25 @@ class CommentService {
       );
       return response;
     } catch (err) {
-      return { err: msg };
+      return {success: false};
     }
   }
   async deleteComments() {
     const No = this.body.no;
     try {
-        const response = await CommentRepository.deleteComments(No);
-        return response;
+      const response = await CommentRepository.deleteComments(No);
+      return response;
+    } catch (err) {
+      return {success: false};
     }
-    catch(err) {
-        return {err : msg};
+  }
+  async getComments() {
+    const boardNo = this.body.board_no;
+    try {
+      const [rows, fields] = await CommentRepository.getComments(boardNo);
+      return rows;
+    } catch {
+      return {success: false};
     }
   }
 }
