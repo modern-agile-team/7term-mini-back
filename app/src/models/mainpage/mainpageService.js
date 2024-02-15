@@ -23,6 +23,21 @@ export default class MainpageService {
 
     let currentPageNumber = this.params.currentPageNumber - 1;
 
+    const boardsCount = await MainpageRepository.getBoardsCount(categoryNo);
+
+    const numberAllPages = Math.ceil(
+      boardsCount[0][0].board_count / numberBoardsYouWant
+    );
+
+    if (boardsCount[0][0].board_count === 0) {
+      return {allPagesCount: numberAllPages, statusCode: 201};
+    } else if (currentPageNumber + 1 > numberAllPages) {
+      return {
+        error: "Bad Request",
+        message: "해당 페이지는 없습니다.",
+        statusCode: 400,
+      };
+    }
     //쿼리를 위한 가공
     currentPageNumber = currentPageNumber * numberBoardsYouWant;
 
@@ -33,11 +48,6 @@ export default class MainpageService {
         categoryNo
       );
 
-    const boardsCount = await MainpageRepository.getBoardsCount(categoryNo);
-
-    const numberAllPages =
-      Math.ceil(boardsCount[0][0].board_count / numberBoardsYouWant) + 1;
-
-    return {statusCode: 201, board: rows, allPagesCount: numberAllPages};
+    return {board: rows, allPagesCount: numberAllPages, statusCode: 201};
   }
 }

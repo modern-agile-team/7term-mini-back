@@ -8,6 +8,8 @@ export default class MainpageService {
 
   static getBoardsAndLoveCountAndCommentCount(pageNo, pages, categoryNo) {
     let where = "";
+
+    // 0을 주면 전체 게시글을 불러옴
     if (categoryNo) {
       where = `WHERE b.category_no = ${categoryNo}`;
     }

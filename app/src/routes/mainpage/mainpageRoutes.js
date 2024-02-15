@@ -13,6 +13,7 @@ router.get(
     .withMessage("유저의 고유번호는 자연수여야 합니다."),
   ctrl.process.getUser
 );
+
 router.get(
   "/:currentPageNumber",
   param("currentPageNumber")
