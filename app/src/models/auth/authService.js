@@ -22,24 +22,25 @@ class Auth {
         }
         const userAccessToken = await JwtToken.createAccessToken({id : userInfo[0].id, no : userInfo[0].no});
         const userRefreshToken = await JwtToken.createRefreshToken({id : userInfo[0].id, no : userInfo[0].no});
-        const userTokenInfo = await AuthStorage.tokenSave(userInfo[0].no, userRefreshToken);
+        await AuthStorage.tokenSave(userInfo[0].no, userRefreshToken);
         return { message : "로그인에 성공하였습니다.", accessToken: userAccessToken, refreshToken : userRefreshToken ,userNickName : userInfo[0].nickname, statusCode : 200};
     }
     async access(){
-        const clientRefreshToken = this.headers;
-        if(!clientRefreshToken){
+        const client = this.headers['authorization'];
+        if(!client){
             return { error : 'Bad Request', message : "토큰이 없습니다.", statusCode : 400};
         }
+        const [type, clientRefreshToken] = client.split(' ');
         const userRefreshToken = await AuthStorage.refreshTokenCheck(clientRefreshToken);
         if(!userRefreshToken[0]){
             return { error : 'Bad Request', message : "토큰 정보가 없습니다.", statusCode : 400};
         }
-        const userRefreshTokenCheck = await JwtToken.verifyToken(clientRefreshToken);
+        const userRefreshTokenCheck = await JwtToken.verifyRefreshToken(clientRefreshToken);
         if(!userRefreshTokenCheck.id){
             return userRefreshTokenCheck;
-        }
+        }   
         const userAccessToken = await JwtToken.createAccessToken({id : userRefreshTokenCheck.id});
-        return { message : "액세스 토큰 재발급 완료됐습니다.", accessToken :  userAccessToken, refreshToken : userRefreshTokenCheck, statusCode : 200};
+        return { message : "액세스 토큰 재발급 완료됐습니다.", accessToken :  userAccessToken, statusCode : 200};
     }
 }
 export default Auth;

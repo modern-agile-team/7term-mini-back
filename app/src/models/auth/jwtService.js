@@ -1,5 +1,6 @@
 "use strict";
 import jwt from "jsonwebtoken";
+
 class JwtToken {
     static async createAccessToken(id) {
         const accessToken = jwt.sign(id, process.env.ACCESS_TOKEN_SECRET,{
@@ -15,9 +16,9 @@ class JwtToken {
         console.log(jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)) 
         return refreshToken;
     }
-    static async verifyToken(token){
+    static async verifyRefreshToken(token){
         try {
-            return jwt.verify(token, REFRESH_TOKEN_SECRET);
+            return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
         } catch (err) {
             return { error : 'Unauthorized', message : "유효하지 않은 토큰입니다.", statusCode : 401};
         }
