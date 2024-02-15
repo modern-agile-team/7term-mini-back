@@ -1,7 +1,10 @@
 import db from "../../config/db.js";
 
 export default class MainpageService {
-  static getUserName() {}
+  static getUserName(userNo) {
+    const query = `SELECT nickname FROM USER WHERE no = ?`;
+    return db.query(query, [userNo]);
+  }
 
   static getBoardsAndLoveCountAndCommentCount(pageNo, pages, categoryNo) {
     let where = "";

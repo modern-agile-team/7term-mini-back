@@ -7,7 +7,15 @@ export default class MainpageService {
     this.params = data.params;
   }
 
-  async getUserName() {}
+  async getUserName() {
+    const userNo = this.headers.user_no;
+
+    const [rows, fields] = await MainpageRepository.getUserName(userNo);
+
+    console.log(rows[0]);
+
+    return {statusCode: 201, userName: rows[0].nickname};
+  }
 
   async getBoardsAndLoveCountAndCommentCount() {
     const numberBoardsYouWant = this.body.numberBoardsYouWant;
