@@ -4,11 +4,11 @@ import validation from "./mainpageValidation.js";
 
 const router = express.Router();
 
-router.get("/", validation.process.getUser, ctrl.process.getUser);
+router.get("/", validation.process.checkUserNo, ctrl.process.getUser);
 
 router.get(
   "/:currentPageNumber",
-  validation.process.getBoards,
+  validation.process.checkBoards,
   ctrl.process.getBoardsAndLoveCountAndCommentCount
 );
 
