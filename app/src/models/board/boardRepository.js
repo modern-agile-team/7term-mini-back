@@ -28,7 +28,7 @@ export default class BoardRepository {
     return db.query(query, [boardNo, boardNo]);
   }
 
-  static async updateBoard(boardNo, categoryNo, content) {
+  static updateBoard(boardNo, categoryNo, content) {
     const query =
       "UPDATE board as b SET category_no = ?, content = ?, updated_at = NOW() WHERE b.no = ?;";
 

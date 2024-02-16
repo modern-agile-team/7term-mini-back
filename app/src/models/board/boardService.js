@@ -41,7 +41,7 @@ export default class BoardService {
       response[0].insertId
     );
 
-    return {statusCode: 201, board: newBoard[0][0]};
+    return {board: newBoard[0][0], statusCode: 201};
   }
 
   async deleteBoard() {
@@ -57,7 +57,7 @@ export default class BoardService {
       };
     }
 
-    const response = await BoardRepository.deleteBoard(boardNo);
+    await BoardRepository.deleteBoard(boardNo);
 
     return {message: "정상적으로 삭제됐습니다.", statusCode: 200};
   }
@@ -76,12 +76,10 @@ export default class BoardService {
       };
     }
 
-    return {statusCode: 201, board: rows[0]};
+    return {board: rows[0], statusCode: 200};
   }
 
   async updateBoard() {
-    // console.log(this.params.boardNo);
-    // console.log(this.body.content);
     const boardNo = this.params.boardNo;
     const {categoryNo, content} = this.body;
 
@@ -111,6 +109,6 @@ export default class BoardService {
       boardNo
     );
 
-    return {statusCode: 201, board: newBoard[0][0]};
+    return {board: newBoard[0][0], statusCode: 200};
   }
 }

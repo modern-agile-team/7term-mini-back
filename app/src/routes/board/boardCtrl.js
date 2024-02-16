@@ -8,11 +8,9 @@ export default {
       const error = validationResult(req).errors[0];
 
       if (error) {
-        res
+        return res
           .status(400)
           .json({error: "Bad Request", message: error.msg, statusCode: 400});
-
-        return 0;
       }
 
       const instance = new BoardService(req);
@@ -25,11 +23,9 @@ export default {
       const error = validationResult(req).errors[0];
 
       if (error) {
-        res
+        return res
           .status(400)
           .json({error: "Bad Request", message: error.msg, statusCode: 400});
-
-        return 0;
       }
 
       const instance = new BoardService(req);
@@ -39,35 +35,31 @@ export default {
     },
 
     findOneBoardWithNicknameAndLoveCount: async (req, res) => {
-      // console.log(validationResult(req));
-
       const error = validationResult(req).errors[0];
 
       if (error) {
-        res
+        return res
           .status(400)
           .json({error: "Bad Request", message: error.msg, statusCode: 400});
-
-        return 0;
       }
 
       const instance = new BoardService(req);
       const response = await instance.findOneBoardWithNicknameAndLoveCount();
 
-      response.error
-        ? res.status(response.statusCode).json(response)
-        : res.status(response.statusCode).json(response.board);
+      res.status(response.statusCode).json(response);
+
+      // response.error
+      //   ? res.status(response.statusCode).json(response)
+      //   : res.status(response.statusCode).json(response.board);
     },
 
     updateBoard: async (req, res) => {
       const error = validationResult(req).errors[0];
 
       if (error) {
-        res
+        return res
           .status(400)
           .json({error: "Bad Request", message: error.msg, statusCode: 400});
-
-        return 0;
       }
 
       const instace = new BoardService(req);
@@ -76,9 +68,4 @@ export default {
       res.status(response.statusCode).json(response);
     },
   },
-  // check: {
-  //   checkBoardNo: (req, res) => {
-  //     body("category").isEmpty();
-  //   },
-  // },
 };
