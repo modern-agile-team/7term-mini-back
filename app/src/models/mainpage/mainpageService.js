@@ -14,7 +14,7 @@ export default class MainpageService {
 
     console.log(rows[0]);
 
-    return {statusCode: 201, userName: rows[0].nickname};
+    return {statusCode: 200, userName: rows[0].nickname};
   }
 
   async getBoardsAndLoveCountAndCommentCount() {
@@ -38,6 +38,7 @@ export default class MainpageService {
         statusCode: 404,
       };
     }
+    //해당 번호의 카테고리가 있는지 DB에서 확인해야함------------------------------------------------------------
 
     //쿼리를 위한 가공
     currentPageNumber = currentPageNumber * numberBoardsYouWant;
