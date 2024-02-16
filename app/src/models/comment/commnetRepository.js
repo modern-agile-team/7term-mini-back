@@ -34,6 +34,10 @@ class CommentRepository {
     const query = "select no from board where no = ?;";
     return db.query(query, [boardNo]);
   }
+  static showComment(insertId) {
+    const query = "select content from comment where no =?;";
+    return db.query(query, [insertId]);
+  }
 }
 
 export default CommentRepository;

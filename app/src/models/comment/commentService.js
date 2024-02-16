@@ -34,7 +34,11 @@ class CommentService {
       userNo,
       comments
     );
-    return {Statuscode: 201, response: response[0]};
+    const [rows, fields] = await CommentRepository.showComment(
+      response[0].insertId
+    );
+
+    return {Statuscode: 201, rows: rows[0]};
   }
   async deleteComments() {
     const No = this.body.no;
