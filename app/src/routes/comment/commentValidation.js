@@ -15,7 +15,11 @@ export default {
         .withMessage("유저 번호는 비어있을 수 없습니다.")
         .isInt()
         .withMessage("유저 번호는 정수이어야 합니다."),
-      body("content").notEmpty().withMessage("댓글은 비어있을 수 없습니다."),
+      body("content")
+        .notEmpty()
+        .withMessage("댓글은 비어있을 수 없습니다.")
+        .isLength({max: 100})
+        .withMessage("댓글은 100자를 넘길 수 없습니다."),
     ],
     checkGetComments: [
       body("board_no")
