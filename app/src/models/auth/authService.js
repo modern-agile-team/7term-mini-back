@@ -8,18 +8,18 @@ class Auth {
     this.params = req.params;
     this.headers = req.headers;
   }
-  async check() {
-    const client = this.headers['authorization'];
-    if (!client) {
-      return { error: 'Bad Request', message: "토큰이 없습니다.", statusCode: 400 };
-    }
-    const [type, clientAccessToken] = client.split(' ');
-    const userAccessTokenCheck = await JwtService.verifyAccessToken(clientAccessToken);
-    if (!userAccessTokenCheck.error) {
-      return userAccessTokenCheck;
-    }
-    return { message: "액세스 토큰 확인 됐습니다.", statusCode: 200 }
-  }
+  // async check() {
+  //   const client = this.headers['authorization'];
+  //   if (!client) {
+  //     return { error: 'Bad Request', message: "토큰이 없습니다.", statusCode: 400 };
+  //   }
+  //   const [type, clientAccessToken] = client.split(' ');
+  //   const userAccessTokenCheck = await JwtService.verifyAccessToken(clientAccessToken);
+  //   if (!userAccessTokenCheck.error) {
+  //     return userAccessTokenCheck;
+  //   }
+  //   return { message: "액세스 토큰 확인 됐습니다.", statusCode: 200 }
+  // }
   async login() {
     const clientInfo = this.body;
     if (!clientInfo.id) {
@@ -48,7 +48,7 @@ class Auth {
       return { error: 'Bad Request', message: "토큰 정보가 없습니다.", statusCode: 400 };
     }
     const userRefreshTokenCheck = await JwtService.verifyRefreshToken(clientRefreshToken);
-    if (!userRefreshTokenCheck.id) {
+    if (userRefreshTokenCheck.error) {
       return userRefreshTokenCheck;
     }
     const userAccessToken = await JwtService.createAccessToken({ id: userRefreshTokenCheck.id, no: userRefreshTokenCheck.no });
