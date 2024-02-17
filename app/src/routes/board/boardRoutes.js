@@ -1,16 +1,22 @@
 import express from "express";
 import ctrl from "./boardCtrl.js";
-import {body, param, header} from "express-validator";
 import validation from "./boardValidation.js";
+import middleware from "../auth/authMiddleware.js";
 
 const router = express.Router();
 
 //보드 생성
-router.post("/", validation.process.checkBeforePost, ctrl.process.appendBoard);
+router.post(
+  "/",
+  middleware.tokenProcess.accessToken,
+  validation.process.checkBeforePost,
+  ctrl.process.appendBoard
+);
 
 //보드 삭제
 router.delete(
   "/:boardNo",
+  middleware.tokenProcess.accessToken,
   validation.process.checkBeforeDelete,
   ctrl.process.deleteBoard
 );
@@ -18,6 +24,7 @@ router.delete(
 //보드 조회
 router.get(
   "/:boardNo",
+  middleware.tokenProcess.accessToken,
   validation.process.checkBeforeGet,
   ctrl.process.findOneBoardWithNicknameAndLoveCount
 );
@@ -25,6 +32,7 @@ router.get(
 //보드 수정
 router.put(
   "/:boardNo",
+  middleware.tokenProcess.accessToken,
   validation.process.checkBeforePut,
   ctrl.process.updateBoard
 );

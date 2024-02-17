@@ -1,5 +1,5 @@
 "use strict";
-import BoardService from "../../models/board/boardservice.js";
+import BoardService from "../../models/board/boardService.js";
 import {validationResult} from "express-validator";
 
 export default {

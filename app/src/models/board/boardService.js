@@ -5,23 +5,14 @@ export default class BoardService {
     this.body = data.body;
     this.params = data.params;
     this.headers = data.headers;
+    this.user = data.user;
   }
 
   async appendBoard() {
-    const userNo = this.headers.user_no;
+    const userNo = this.user.no;
     const {categoryNo, content} = this.body;
 
-    let error = await BoardRepository.isUserNo(userNo);
-
-    if (!error[0][0]) {
-      return {
-        error: "Not Found",
-        message: "해당 유저 고유번호는 등록되어있지 않습니다.",
-        statusCode: 404,
-      };
-    }
-
-    error = await BoardRepository.isCategoryNo(categoryNo);
+    const error = await BoardRepository.isCategoryNo(categoryNo);
 
     if (!error[0][0]) {
       return {
@@ -45,6 +36,7 @@ export default class BoardService {
   }
 
   async deleteBoard() {
+    const userNo = this.user.no;
     const boardNo = this.params.boardNo;
 
     const error = await BoardRepository.isBoardNo(boardNo);
@@ -54,6 +46,16 @@ export default class BoardService {
         error: "Not Found",
         message: "해당 번호의 게시글은 등록되어있지 않습니다.",
         statusCode: 404,
+      };
+    }
+
+    const checkUserNo = await BoardRepository.checkBoardOwner(boardNo);
+
+    if (userNo !== checkUserNo[0][0].userNo) {
+      return {
+        error: "Forbidden",
+        message: "자신이 쓴 게시글만 삭제 할 수 있습니다.",
+        statusCode: 403,
       };
     }
 
@@ -82,6 +84,7 @@ export default class BoardService {
   async updateBoard() {
     const boardNo = this.params.boardNo;
     const {categoryNo, content} = this.body;
+    const userNo = this.user.no;
 
     let error = await BoardRepository.isBoardNo(boardNo);
 
@@ -100,6 +103,16 @@ export default class BoardService {
         error: "Not Found",
         message: "해당 번호의 카테고리는 등록되어있지 않습니다.",
         statusCode: 404,
+      };
+    }
+
+    const checkUserNo = await BoardRepository.checkBoardOwner(boardNo);
+
+    if (userNo !== checkUserNo[0][0].userNo) {
+      return {
+        error: "Forbidden",
+        message: "자신이 쓴 게시글만 수정 할 수 있습니다.",
+        statusCode: 403,
       };
     }
 

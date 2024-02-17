@@ -52,4 +52,10 @@ export default class BoardRepository {
 
     return db.query(query, [categoryNo]);
   }
+
+  static checkBoardOwner(boardNo) {
+    const query = "SELECT user_no as userNo FROM board WHERE no = ?";
+
+    return db.query(query, [boardNo]);
+  }
 }

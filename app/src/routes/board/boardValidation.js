@@ -1,13 +1,8 @@
-import {header, body, param} from "express-validator";
+import {body, param} from "express-validator";
 
 export default {
   process: {
     checkBeforePost: [
-      header("user_no")
-        .notEmpty()
-        .withMessage("유저 고유번호가 필요합니다.")
-        .isInt({min: 1})
-        .withMessage("유저 고유번호는 자연수여야 합니다."),
       body("categoryNo")
         .notEmpty()
         .withMessage("카테고리 번호는 비어둘 수 없습니다.")
