@@ -1,18 +1,9 @@
 "use strict";
 import BoardService from "../../models/board/boardService.js";
-import {validationResult} from "express-validator";
 
 export default {
   process: {
     appendBoard: async (req, res) => {
-      const error = validationResult(req).errors[0];
-
-      if (error) {
-        return res
-          .status(400)
-          .json({error: "Bad Request", message: error.msg, statusCode: 400});
-      }
-
       const instance = new BoardService(req);
       const response = await instance.appendBoard();
 
@@ -20,14 +11,6 @@ export default {
     },
 
     deleteBoard: async (req, res) => {
-      const error = validationResult(req).errors[0];
-
-      if (error) {
-        return res
-          .status(400)
-          .json({error: "Bad Request", message: error.msg, statusCode: 400});
-      }
-
       const instance = new BoardService(req);
       const response = await instance.deleteBoard();
 
@@ -35,14 +18,6 @@ export default {
     },
 
     findOneBoardWithNicknameAndLoveCount: async (req, res) => {
-      const error = validationResult(req).errors[0];
-
-      if (error) {
-        return res
-          .status(400)
-          .json({error: "Bad Request", message: error.msg, statusCode: 400});
-      }
-
       const instance = new BoardService(req);
       const response = await instance.findOneBoardWithNicknameAndLoveCount();
 
@@ -54,14 +29,6 @@ export default {
     },
 
     updateBoard: async (req, res) => {
-      const error = validationResult(req).errors[0];
-
-      if (error) {
-        return res
-          .status(400)
-          .json({error: "Bad Request", message: error.msg, statusCode: 400});
-      }
-
       const instace = new BoardService(req);
       const response = await instace.updateBoard();
 
