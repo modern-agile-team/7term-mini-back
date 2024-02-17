@@ -1,15 +1,7 @@
-import {body, param, query} from "express-validator";
+import {header, param, query} from "express-validator";
 
 export default {
   process: {
-    checkUserNo: [
-      body("user_no")
-        .notEmpty()
-        .withMessage("유저 고유번호는 비워둘 수 없습니다.")
-        .isInt()
-        .withMessage("유저의 고유번호는 자연수여야 합니다."),
-    ],
-
     checkBoards: [
       param("currentPageNumber")
         .notEmpty()

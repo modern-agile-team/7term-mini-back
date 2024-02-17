@@ -2,17 +2,15 @@ import MainpageRepository from "./mainpageRepository.js";
 
 export default class MainpageService {
   constructor(data) {
-    this.headers = data.headers;
     this.params = data.params;
     this.query = data.query;
+    this.user = data.user;
   }
 
   async getUserName() {
-    const userNo = this.headers.user_no;
+    const userNo = this.user.no;
 
     const [rows, fields] = await MainpageRepository.getUserName(userNo);
-
-    console.log(rows[0]);
 
     return {statusCode: 200, userName: rows[0].nickname};
   }
