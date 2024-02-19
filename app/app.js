@@ -14,12 +14,7 @@ app.use(
     origin: "*",
   })
 );
-app.use(express.json({ extended: true }));
-app.use("/", home);
-
 app.use(express.json({extended: true}));
-
 app.use("/", home);
-app.use("/mainpage", main);
 
 export default app;
