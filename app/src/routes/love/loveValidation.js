@@ -1,18 +1,20 @@
-import {param, body} from "express-validator";
+import {param, validationResult} from "express-validator";
 
 export default {
-  process: {
-    boardNo_userNocheck: [
-      param("board_no")
-        .notEmpty()
-        .withMessage("게시글 고유 번호는 비어있을 수 없습니다.")
-        .isInt()
-        .withMessage("게시글 고유 번호는 정수이이어 합니다."),
-      body("user_no")
-        .notEmpty()
-        .withMessage("유저 고유 번호는 비어있을 수 없습니다.")
-        .isInt()
-        .withMessage("유저 고유 번호는 정수이어야 합니다."),
-    ],
+  checkBoardNo: async (req, res, next) => {
+    await param("board_no", "게시글 고유번호는 자연수이어야 합니다.")
+      .isInt({min: 1})
+      .run(req);
+
+    const error = validationResult(req).errors[0];
+
+    if (error) {
+      return res.status(400).json({
+        error: "Bad Request",
+        message: error.msg,
+        Statuscode: 400,
+      });
+    }
+    next();
   },
 };

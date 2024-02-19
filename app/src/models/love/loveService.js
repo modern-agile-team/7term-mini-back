@@ -4,12 +4,13 @@ import LoveRepository from "./loveRepository.js";
 
 class LoveService {
   constructor(req) {
-    this.body = req.body;
+    this.user = req.user;
     this.params = req.params;
   }
-  async getLove() {
-    const userNo = this.body.user_no;
+  async addLove() {
+    const userNo = this.user.no;
     const boardNo = this.params.board_no;
+    console.log(userNo);
     let error = await LoveRepository.isBoardNo(boardNo);
     if (!error[0][0]) {
       return {
@@ -28,7 +29,7 @@ class LoveService {
     }
     const duplication = await LoveRepository.duplication(boardNo, userNo);
     if (!duplication[0][0]) {
-      await LoveRepository.getLove(userNo, boardNo);
+      await LoveRepository.addLove(userNo, boardNo);
       return {statuscode: 201};
     } else {
       return {
@@ -39,7 +40,7 @@ class LoveService {
     }
   }
   async deleteLove() {
-    const userNo = this.body.user_no;
+    const userNo = this.user.no;
     const boardNo = this.params.board_no;
     let error = await LoveRepository.isBoardNo(boardNo);
     if (!error[0][0]) {
@@ -55,6 +56,23 @@ class LoveService {
         error: "Not Found",
         message: "해당 유저가 존재하지 않습니다.",
         statuscode: 404,
+      };
+    }
+    error = await LoveRepository.checkLove(boardNo, userNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 좋아요가 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
+
+    const checkUserNo = await LoveRepository.checkLoveOwner(boardNo, userNo);
+    if (userNo !== checkUserNo[0][0].user_no) {
+      return {
+        error: "Forbidden",
+        message: "좋아요 삭제는 본인만 가능합니다.",
+        statuscode: 403,
       };
     }
     await LoveRepository.deleteLove(userNo, boardNo);
