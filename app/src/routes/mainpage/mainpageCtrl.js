@@ -2,17 +2,18 @@ import MainpageService from "../../models/mainpage/mainpageService.js";
 
 export default {
   getUser: async (req, res) => {
-    const instance = new MainpageService(req);
+    const mainpageService = new MainpageService(req);
 
-    const response = await instance.getUserName();
+    const response = await mainpageService.getUserName();
 
     res.status(response.statusCode).json(response);
   },
 
   getBoardsAndLoveCountAndCommentCount: async (req, res) => {
-    const instance = new MainpageService(req);
+    const mainpageService = new MainpageService(req);
 
-    const response = await instance.getBoardsAndLoveCountAndCommentCount();
+    const response =
+      await mainpageService.getBoardsAndLoveCountAndCommentCount();
 
     res.status(response.statusCode).json(response);
   },

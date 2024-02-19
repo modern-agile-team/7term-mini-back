@@ -14,6 +14,7 @@ export default class MainpageRepository {
     if (categoryNo) {
       where = `WHERE b.category_no = ${categoryNo}`;
     }
+
     const query = `SELECT b.no, c.no as category_no, c.name as category_name, u.nickname, b.content, b.created_at, b.updated_at, 
     COUNT(DISTINCT co.no) as comment_count,
     COUNT(DISTINCT bl.no) as love_count
