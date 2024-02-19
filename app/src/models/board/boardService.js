@@ -1,18 +1,18 @@
 import BoardRepository from "./boardRepository.js";
 
 export default class BoardService {
-  constructor(data) {
-    this.body = data.body;
-    this.params = data.params;
-    this.headers = data.headers;
-    this.user = data.user;
+  constructor(req) {
+    this.body = req.body;
+    this.params = req.params;
+    this.headers = req.headers;
+    this.user = req.user;
   }
 
   async appendBoard() {
     const userNo = this.user.no;
     const {categoryNo, content} = this.body;
 
-    const error = await BoardRepository.isCategoryNo(categoryNo);
+    const error = await BoardRepository.checkCategoryNo(categoryNo);
 
     if (!error[0][0]) {
       return {
@@ -39,7 +39,7 @@ export default class BoardService {
     const userNo = this.user.no;
     const boardNo = this.params.boardNo;
 
-    const error = await BoardRepository.isBoardNo(boardNo);
+    const error = await BoardRepository.checkBoardNo(boardNo);
 
     if (!error[0][0]) {
       return {
@@ -86,7 +86,7 @@ export default class BoardService {
     const {categoryNo, content} = this.body;
     const userNo = this.user.no;
 
-    let error = await BoardRepository.isBoardNo(boardNo);
+    let error = await BoardRepository.checkBoardNo(boardNo);
 
     if (!error[0][0]) {
       return {
@@ -96,7 +96,7 @@ export default class BoardService {
       };
     }
 
-    error = await BoardRepository.isCategoryNo(categoryNo);
+    error = await BoardRepository.checkCategoryNo(categoryNo);
 
     if (!error[0][0]) {
       return {

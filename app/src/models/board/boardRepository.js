@@ -35,19 +35,19 @@ export default class BoardRepository {
     return db.query(query, [categoryNo, content, boardNo]);
   }
 
-  static isUserNo(userNo) {
+  static checkUserNo(userNo) {
     const query = "SELECT no FROM user WHERE no = ?";
 
     return db.query(query, [userNo]);
   }
 
-  static isBoardNo(boardNo) {
+  static checkBoardNo(boardNo) {
     const query = "SELECT no FROM board WHERE no = ?";
 
     return db.query(query, [boardNo]);
   }
 
-  static isCategoryNo(categoryNo) {
+  static checkCategoryNo(categoryNo) {
     const query = "SELECT no FROM category WHERE no = ?";
 
     return db.query(query, [categoryNo]);

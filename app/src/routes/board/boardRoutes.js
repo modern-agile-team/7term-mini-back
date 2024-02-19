@@ -9,32 +9,32 @@ const router = express.Router();
 router.post(
   "/",
   middleware.tokenProcess.accessToken,
-  validation.process.checkBeforePost,
-  ctrl.process.appendBoard
+  validation.checkBeforePost,
+  ctrl.appendBoard
 );
 
 //보드 삭제
 router.delete(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.process.checkBeforeDelete,
-  ctrl.process.deleteBoard
+  validation.checkBeforeDelete,
+  ctrl.deleteBoard
 );
 
 //보드 조회
 router.get(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.process.checkBeforeGet,
-  ctrl.process.findOneBoardWithNicknameAndLoveCount
+  validation.checkBeforeGet,
+  ctrl.findOneBoardWithNicknameAndLoveCount
 );
 
 //보드 수정
 router.put(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.process.checkBeforePut,
-  ctrl.process.updateBoard
+  validation.checkBeforePut,
+  ctrl.updateBoard
 );
 
 export default router;
