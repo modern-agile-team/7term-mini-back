@@ -5,13 +5,13 @@ import checkToken from "../auth/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", checkToken.tokenProcess.accessToken, ctrl.process.getUser);
+router.get("/", checkToken.tokenProcess.accessToken, ctrl.getUser);
 
 router.get(
   "/:currentPageNumber",
   checkToken.tokenProcess.accessToken,
-  validation.process.checkBoards,
-  ctrl.process.getBoardsAndLoveCountAndCommentCount
+  validation.checkBoards,
+  ctrl.getBoardsAndLoveCountAndCommentCount
 );
 
 export default router;

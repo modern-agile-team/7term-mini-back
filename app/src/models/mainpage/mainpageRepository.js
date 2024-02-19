@@ -1,8 +1,9 @@
 import db from "../../config/db.js";
 
-export default class MainpageService {
+export default class MainpageRepository {
   static getUserName(userNo) {
     const query = `SELECT nickname FROM USER WHERE no = ?`;
+
     return db.query(query, [userNo]);
   }
 
@@ -34,6 +35,7 @@ export default class MainpageService {
 
   static getBoardsCount(categoryNo) {
     let where = "";
+
     if (categoryNo) {
       where = `WHERE board.category_no = ${categoryNo}`;
     }

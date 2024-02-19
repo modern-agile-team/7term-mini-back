@@ -31,12 +31,12 @@ export default class MainpageService {
       return {allPagesCount: numberAllPages, statusCode: 200};
     } else if (currentPageNumber + 1 > numberAllPages) {
       return {
-        error: "Bad Request",
+        error: "Not Found",
         message: "해당 페이지는 없습니다.",
         statusCode: 404,
       };
     }
-    //해당 번호의 카테고리가 있는지 DB에서 확인해야함------------------------------------------------------------
+    //해당 번호의 카테고리가 있는지 DB에서 확인해야함-------------------------------------------------이 작업은 board 브랜치에 만들어 놓은 것을 이용할것임
 
     //쿼리를 위한 가공
     currentPageNumber = currentPageNumber * numberBoardsYouWant;
