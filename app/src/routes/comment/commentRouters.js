@@ -3,18 +3,28 @@
 import express from "express";
 import ctrl from "./commentCtrl.js";
 import validation from "./commentValidation.js";
+import Middleware from "../auth/authMiddleware.js";
 
 const router = express.Router();
 
 router.post(
   "/:board_no",
-  validation.process.checkAddComments,
+  Middleware.tokenProcess.accessToken,
+  validation.checkAddComments,
   ctrl.process.addComments
 );
-router.get("/", validation.process.checkGetComments, ctrl.process.getComments);
+
+router.get(
+  "/:board_no",
+  Middleware.tokenProcess.accessToken,
+  validation.checkGetComments,
+  ctrl.process.getComments
+);
+
 router.delete(
   "/",
-  validation.process.checkDeleteComments,
+  Middleware.tokenProcess.accessToken,
+  validation.checkDeleteComments,
   ctrl.process.deleteComments
 );
 
