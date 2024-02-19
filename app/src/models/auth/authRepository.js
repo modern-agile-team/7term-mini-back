@@ -1,8 +1,6 @@
 "use strict";
 
 import db from "../../config/db.js";
-// import { resolve }  from "path"
-// import { reject, log } from "async";
 
 class AuthStorage {
   static async check(userId, userPassWord) {

@@ -15,13 +15,11 @@ const tokenProcess = {
       console.log('토큰 인증 성공', payload)
       req.user = { ...payload };
       console.log(req.user)
-      // res.json({ message: "인증 성공" });
       next();
     } catch (err) {
       console.log("유효하지 않은 토큰입니다.");
       const response = { error: 'Unauthorized', message: err.message, statusCode: 401 };
-      res.status(response.statusCode).json(response);
-      next(err)
+      return res.status(response.statusCode).json(response);
     }
   }
 }
