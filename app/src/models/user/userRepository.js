@@ -3,17 +3,17 @@
 import db from "../../config/db.js";
 
 class UserStorage {
-  static async findUsers(id, nickName) {
+  static async findUsers(id, nickname) {
     const query = "SELECT * FROM user WHERE id = ? OR nickname = ?;";
-    const [rows, fields] = await db.query(query, [id, nickName]);
+    const [rows, fields] = await db.query(query, [id, nickname]);
     return rows;
   }
 
-  static async save(nickName, id, password, email) {
+  static async save(nickname, id, password, email) {
     const query =
       "INSERT INTO user (`nickname`, `id`, `password`, `email`) VALUES (?, ?, ?, ?);";
     const [rows, fields] = await db.query(query, [
-      nickName,
+      nickname,
       id,
       password,
       email,

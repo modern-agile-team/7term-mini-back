@@ -3,7 +3,7 @@
 import UserStorage from "./userRepository.js";
 import bcrypt from "bcrypt";
 
-class User {
+class UserService {
   constructor(req) {
     this.body = req.body;
     this.params = req.params;
@@ -104,4 +104,4 @@ class User {
     }
   }
 }
-export default User;
+export default UserService;
