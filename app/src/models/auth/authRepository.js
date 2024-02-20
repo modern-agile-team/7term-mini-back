@@ -3,9 +3,10 @@
 import db from "../../config/db.js";
 
 class AuthStorage {
-  static findUsers(userId, userPassWord) {
+  static async findUsers(userId, userPassWord) {
     const query = "SELECT * FROM user WHERE id = ? AND password = ?;";
-    return db.query(query, [userId, userPassWord]);
+    const [users, field] = await db.query(query, [userId, userPassWord]);
+    return users[0];
   };
 
   static tokenSave(userNo, userRefreshToken) {
@@ -13,9 +14,10 @@ class AuthStorage {
     return db.query(query, [userNo, userRefreshToken]);
   };
 
-  static refreshTokenCheck(clientRefreshToken) {
+  static async refreshTokenCheck(clientRefreshToken) {
     const query = "SELECT * FROM token WHERE refresh_token = ?;";
-    return db.query(query, [clientRefreshToken]);
+    const [users, field] = await db.query(query, [clientRefreshToken]);
+    return users[0];
   };
 };
 export default AuthStorage;

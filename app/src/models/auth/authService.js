@@ -22,14 +22,14 @@ class AuthService {
     };
 
     const userInfo = await AuthRepository.findUsers(loginRequestBody.id, loginRequestBody.password);
-    if (!userInfo[0][0]) {
+    if (!userInfo) {
       return { error: 'Not Found', message: "유저 정보가 없습니다.", statusCode: 404 };
     };
 
-    const accessToken = JwtService.createAccessToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
-    const refreshToken = JwtService.createRefreshToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
-    AuthRepository.tokenSave(userInfo[0][0].no, refreshToken);
-    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: userInfo[0][0].nickname, statusCode: 201 };
+    const accessToken = JwtService.createAccessToken({ id: userInfo.id, no: userInfo.no });
+    const refreshToken = JwtService.createRefreshToken({ id: userInfo.id, no: userInfo.no });
+    await AuthRepository.tokenSave(userInfo.no, refreshToken);
+    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: userInfo.nickname, statusCode: 201 };
   };
 
   async newAccessToken() {
@@ -45,12 +45,11 @@ class AuthService {
     };
 
     const refreshToken = await AuthRepository.refreshTokenCheck(clientRefreshToken); // DB상에서 토큰 여부 검사
-
-    if (!refreshToken[0][0]) {
+    if (!refreshToken) {
       return { error: 'Not Found', message: "유저의 토큰 정보가 없습니다.", statusCode: 404 };
     };
 
-    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken[0][0].refresh_token); // 받은 토큰의 유효기간 검사.
+    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken.refresh_token); // 받은 토큰의 유효기간 검사.
     if (userRefreshTokenPayload.error) {
       return userRefreshTokenPayload;
     };

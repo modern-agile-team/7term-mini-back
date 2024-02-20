@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post("/login", ctrl.process.login);
 
-router.get("/new-accesstoken", ctrl.process.newAccessToken);
+router.get("/new-access-token", ctrl.process.newAccessToken);
 
 export default router;
