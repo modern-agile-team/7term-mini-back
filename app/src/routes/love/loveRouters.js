@@ -8,12 +8,12 @@ import Middleware from "../auth/authMiddleware.js";
 const router = express.Router();
 
 router.post(
-  "/love/:board_no",
+  "/:board_no",
   Middleware.tokenProcess.accessToken,
   ctrl.process.addLove
 );
 router.delete(
-  "/love/:board_no",
+  "/:board_no",
   Middleware.tokenProcess.accessToken,
   validation.checkBoardNo,
   ctrl.process.deleteLove

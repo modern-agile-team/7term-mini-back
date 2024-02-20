@@ -13,32 +13,15 @@ class LoveRepository {
     return db.query(query, [userNo, boardNo]);
   }
 
+  static selectLoveNoAndUserNo(boardNo, userNo) {
+    const query =
+      "select user_no, no from board_love where board_no =? and user_no = ?;";
+    return db.query(query, [boardNo, userNo]);
+  }
+
   static isUserNo(userNo) {
     const query = "select no from user where no = ?;";
     return db.query(query, [userNo]);
-  }
-
-  static isBoardNo(boardNo) {
-    const query = "select no from board where no =?;";
-    return db.query(query, [boardNo]);
-  }
-
-  static duplication(boardNo, userNo) {
-    const query =
-      "select user_no from board_love where board_no= ? and user_no = ?;";
-    return db.query(query, [boardNo, userNo]);
-  }
-
-  static checkLove(boardNo, userNo) {
-    const query =
-      "select no from board_love where board_no =? and user_no = ?;";
-    return db.query(query, [boardNo, userNo]);
-  }
-
-  static checkLoveOwner(boardNo, userNo) {
-    const query =
-      "select user_no from board_love where board_no =? and user_no = ?;";
-    return db.query(query, [boardNo, userNo]);
   }
 }
 

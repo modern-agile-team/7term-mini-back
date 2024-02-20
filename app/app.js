@@ -15,10 +15,8 @@ app.use(
   })
 );
 app.use(express.json({extended: true}));
+
 app.use("/", home);
-
-app.use(express.json({extended: true}));
-
-app.use("/board", love);
+app.use("/loves", love);
 
 export default app;
