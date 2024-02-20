@@ -7,21 +7,22 @@ class CommentService {
     this.body = req.body;
     this.params = req.params;
     this.user = req.user;
+    this.query = req.query;
   }
   async addComments() {
     const boardNo = this.params.board_no;
     const userNo = this.user.no;
     const comments = this.body.content;
 
-    let error = await CommentRepository.checkBoardNO(boardNo);
-    if (!error[0][0]) {
-      return {
-        error: "Not Found",
-        message: "해당 게시글이 존재하지 않습니다.",
-        statuscode: 404,
-      };
-    }
-    error = await CommentRepository.checkUserNO(userNo);
+    // let error = await CommentRepository.checkBoardNO(boardNo);
+    // if (!error[0][0]) {
+    //   return {
+    //     error: "Not Found",
+    //     message: "해당 게시글이 존재하지 않습니다.",
+    //     statuscode: 404,
+    //   };
+    // }
+    let error = await CommentRepository.checkUserNo(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -35,16 +36,17 @@ class CommentService {
       userNo,
       comments
     );
-    const [rows, fields] = await CommentRepository.showComment(
+    const [raws, fields] = await CommentRepository.showComment(
       response[0].insertId
     );
 
-    return {statuscode: 201, rows: rows[0]};
+    return {statuscode: 201, raws: raws[0]};
   }
   async deleteComments() {
-    const no = this.body.no;
+    const no = Number(this.query.no);
     const userNo = this.user.no;
-    let error = await CommentRepository.checkNO(no);
+    let error = await CommentRepository.checkNo(no);
+    console.log(error);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -63,22 +65,30 @@ class CommentService {
         statuscode: 403,
       };
     }
-    await CommentRepository.deleteComments(no);
-    return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
+    const deleteResult = await CommentRepository.deleteComments(no);
+    console.log(deleteResult);
+    if (deleteResult[0].affectedRows === 1) {
+      return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
+    } else {
+      return {
+        error: "Internal Server Error",
+        message: "삭제가 되지 않았습니다.",
+        statuscode: 500,
+      };
+    }
   }
   async getComments() {
     const boardNo = this.params.board_no;
-    const no = this.body.no;
-    let error = await CommentRepository.checkBoardNO(boardNo);
-    if (!error[0][0]) {
-      return {
-        error: "Not Found",
-        message: "해당 게시글이 존재하지 않습니다.",
-        statuscode: 404,
-      };
-    }
-    const [rows, fields] = await CommentRepository.getComments(boardNo);
-    return {statuscode: 200, rows};
+    // let error = await CommentRepository.checkBoardNO(boardNo);
+    // if (!error[0][0]) {
+    //   return {
+    //     error: "Not Found",
+    //     message: "해당 게시글이 존재하지 않습니다.",
+    //     statuscode: 404,
+    //   };
+    // }
+    const [raws, fields] = await CommentRepository.getComments(boardNo);
+    return {statuscode: 200, raws};
   }
 }
 

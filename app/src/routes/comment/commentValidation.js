@@ -1,6 +1,6 @@
 "use stirict";
 
-import {param, body, validationResult} from "express-validator";
+import {param, body, query, validationResult} from "express-validator";
 
 export default {
   checkAddComments: async (req, res, next) => {
@@ -37,7 +37,7 @@ export default {
     next();
   },
   checkDeleteComments: async (req, res, next) => {
-    await body("no", "댓글 고유 번호는 자연수이어야 합니다.")
+    await query("no", "댓글 고유 번호는 자연수이어야 합니다.")
       .isInt({min: 1})
       .run(req);
     const error = validationResult(req).errors[0];

@@ -20,19 +20,14 @@ class CommentRepository {
     return db.query(query, [boardNo, boardNo]);
   }
 
-  static checkUserNO(userNo) {
+  static checkUserNo(userNo) {
     const query = "select no from user where no = ?;";
     return db.query(query, [userNo]);
   }
 
-  static checkNO(no) {
+  static checkNo(no) {
     const query = "select no from comment where no = ?;";
     return db.query(query, [no]);
-  }
-
-  static checkBoardNO(boardNo) {
-    const query = "select no from board where no = ?;";
-    return db.query(query, [boardNo]);
   }
 
   static showComment(insertId) {
