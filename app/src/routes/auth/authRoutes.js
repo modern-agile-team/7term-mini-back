@@ -6,9 +6,10 @@ import authMiddleware from "./authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/login", authMiddleware.tokenProcess.accessToken, ctrl.process.login);
+router.post("/login", ctrl.process.login);
 
 router.get("/new-accesstoken", ctrl.process.newAccessToken);
 
-router.delete("/logout", authMiddleware.tokenProcess.accessToken, ctrl.process.logout)
+router.delete("/logout", authMiddleware.tokenProcess.accessToken, ctrl.process.logout);
+
 export default router;

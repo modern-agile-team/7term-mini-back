@@ -30,12 +30,13 @@ class AuthService {
     const accessToken = JwtService.createAccessToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
     const refreshToken = JwtService.createRefreshToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
     AuthRepository.tokenSave(userInfo[0][0].no, refreshToken);
+
     return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: userInfo[0][0].nickname, statusCode: 201 };
   };
   async logout() {
     const logoutRequestUser = this.user;
 
-    const deleteRefreshToken = await AuthRepository.deleteRefreshToken(logoutRequestUser.no);
+    await AuthRepository.deleteRefreshToken(logoutRequestUser.no);
 
     return { message: "로그아웃에 성공하였습니다.", statusCode: 200 };
   }
