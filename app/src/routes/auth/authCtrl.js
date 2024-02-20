@@ -12,7 +12,7 @@ const process = {
     const auth = new AuthService(req);
     const response = await auth.newAccessToken();
     return res.json(response).status(response.statusCode);
-  }
+  },
 };
 export default {
   process,
