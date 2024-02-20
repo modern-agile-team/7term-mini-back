@@ -1,7 +1,7 @@
 "use strict";
 
 import CommentRepository from "./commnetRepository.js";
-
+import BoardRepository from "../board/boardRepository.js";
 class CommentService {
   constructor(req) {
     this.body = req.body;
@@ -14,15 +14,15 @@ class CommentService {
     const userNo = this.user.no;
     const comments = this.body.content;
 
-    // let error = await CommentRepository.checkBoardNO(boardNo);
-    // if (!error[0][0]) {
-    //   return {
-    //     error: "Not Found",
-    //     message: "해당 게시글이 존재하지 않습니다.",
-    //     statuscode: 404,
-    //   };
-    // }
-    let error = await CommentRepository.checkUserNo(userNo);
+    let error = await BoardRepository.checkBoardNo(boardNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 게시글이 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
+    error = await CommentRepository.checkUserNo(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -79,14 +79,14 @@ class CommentService {
   }
   async getComments() {
     const boardNo = this.params.board_no;
-    // let error = await CommentRepository.checkBoardNO(boardNo);
-    // if (!error[0][0]) {
-    //   return {
-    //     error: "Not Found",
-    //     message: "해당 게시글이 존재하지 않습니다.",
-    //     statuscode: 404,
-    //   };
-    // }
+    let error = await BoardRepository.checkBoardNo(boardNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 게시글이 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
     const [raws, fields] = await CommentRepository.getComments(boardNo);
     return {statuscode: 200, raws};
   }

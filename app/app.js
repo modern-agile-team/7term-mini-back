@@ -19,7 +19,7 @@ app.use(
 
 app.use(express.json({extended: true}));
 
-app.use("/comment", comment);
+app.use("/comments", comment);
 app.use("/", home);
 app.use("/mainpage", main);
 app.use("/boards", board);
