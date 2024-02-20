@@ -2,7 +2,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import home from "./src/routes/user/userRoutes.js";
+import user from "./src/routes/user/userRoutes.js";
 
 const app = express();
 
@@ -14,8 +14,8 @@ app.use(
   })
 );
 
-app.use(express.json({extended: true}));
+app.use(express.json({ extended: true }));
 
-app.use("/", home);
+app.use("/auth", user);
 
 export default app;

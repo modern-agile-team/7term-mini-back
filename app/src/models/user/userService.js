@@ -94,7 +94,7 @@ class User {
         hashPassword,
         clientInfo.email
       );
-      return {statusCode: 201, message: "회원가입에 성공하였습니다."};
+      return { statusCode: 201, message: "회원가입에 성공하였습니다." };
     } catch (err) {
       return {
         error: "Internal Server Error",
