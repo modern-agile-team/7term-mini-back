@@ -13,7 +13,7 @@ export default {
       .isInt({min: 0})
       .run(req);
 
-    await query("pageSize", "선택할 페이지는 자연수가 들어가야합니다.")
+    await query("pageSize", "선택할 페이지 개수는 자연수가 들어가야합니다.")
       .isInt({min: 1})
       .run(req);
 
