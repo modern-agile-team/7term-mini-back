@@ -1,6 +1,7 @@
 "use strict";
 
 import LoveRepository from "./loveRepository.js";
+import BoardRepository from "../board/boardRepository.js";
 
 class LoveService {
   constructor(req) {
@@ -14,7 +15,15 @@ class LoveService {
       boardNo,
       userNo
     );
-    const error = await LoveRepository.isUserNo(userNo);
+    let error = await BoardRepository.checkBoardNo(boardNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 게시물이 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
+    error = await LoveRepository.isUserNo(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -33,6 +42,7 @@ class LoveService {
       };
     }
   }
+
   async deleteLove() {
     const userNo = this.user.no;
     const boardNo = this.params.board_no;
@@ -40,7 +50,15 @@ class LoveService {
       boardNo,
       userNo
     );
-    const error = await LoveRepository.isUserNo(userNo);
+    let error = await BoardRepository.checkBoardNo(boardNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 게시물이 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
+    error = await LoveRepository.isUserNo(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
