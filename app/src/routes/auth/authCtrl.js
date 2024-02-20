@@ -1,6 +1,6 @@
 "use strict";
 
-import Auth from "../../models/auth/authService.js"
+import Auth from "../../models/auth/authService.js";
 // const output = {
 //   check: async (req, res) => {
 //     const auth = new Auth(req);
@@ -18,7 +18,7 @@ const process = {
     const auth = new Auth(req);
     const response = await auth.access();
     return res.json(response).status(response.statusCode);
-  }
+  },
 };
 export default {
   process,
