@@ -1,4 +1,6 @@
 import MainpageRepository from "./mainpageRepository.js";
+import BoardRepository from "../board/boardRepository.js";
+import {check} from "express-validator";
 
 export default class MainpageService {
   constructor(req) {
@@ -25,17 +27,17 @@ export default class MainpageService {
 
     const numberAllPages = Math.ceil(boardsCount[0][0].board_count / pageSize);
 
-    if (boardsCount[0][0].board_count === 0) {
-      return {allPagesCount: numberAllPages, statusCode: 200};
-    } else if (currentPageNumber + 1 > numberAllPages) {
-      return {
-        error: "Not Found",
-        message: "해당 페이지는 없습니다.",
-        statusCode: 404,
-      };
-    }
-    //해당 번호의 카테고리가 있는지 DB에서 확인해야함-------------------------------------------------이 작업은 board 브랜치에 만들어 놓은 것을 이용할것임
+    const checkCategoryNo = await BoardRepository.checkCategoryNo(categoryNo);
 
+    if (categoryNo !== 0) {
+      if (!checkCategoryNo[0][0]) {
+        return {
+          error: "Not Found",
+          message: "해당 카테고리는 없습니다.",
+          statusCode: 404,
+        };
+      }
+    }
     //쿼리를 위한 가공
     currentPageNumber = currentPageNumber * pageSize;
 
