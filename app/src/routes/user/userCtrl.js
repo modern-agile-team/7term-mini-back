@@ -1,14 +1,20 @@
 "use strict";
 
-import User from "../../models/user/userService.js";
+import UserService from "../../models/user/userService.js";
 
 const process = {
   createUser: async (req, res) => {
-    const user = new User(req);
+    const user = new UserService(req);
     const response = await user.createUser();
 
     return res.status(response.statusCode).json(response);
   },
+  deleteUser: async (req, res) => {
+    const user = new UserService(req);
+    const response = await user.deleteUser();
+
+    return res.status(response.statusCode).json(response);
+  }
 };
 export default {
   process,

@@ -21,7 +21,7 @@ app.use(
 
 app.use(express.json({extended: true}));
 
-app.use("/auth", user);
+app.use("/users", user);
 app.use("/auth", auth);
 app.use("/boards", comment);
 app.use("/loves", love);
