@@ -13,7 +13,7 @@ class UserService {
   async deleteUser() {
     const clientInfo = this.user;
     const deleteUserResult = await UserRepository.delete(clientInfo.no);
-    if (!deleteUserResult) {
+    if (!deleteUserResult[0].affectedRows) {
       return { error: "Internal Server Error", message: "회원탈퇴에 실패하였습니다.", statuscode: 500 };
     }
     return { statusCode: 201, message: "회원탈퇴에 성공하였습니다." };
