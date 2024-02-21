@@ -19,11 +19,11 @@ app.use(
   })
 );
 
-app.use(express.json({ extended: true }));
+app.use(express.json({extended: true}));
 
 app.use("/auth", user);
 app.use("/auth", auth);
-app.use("/comment", comment);
+app.use("/boards", comment);
 app.use("/loves", love);
 app.use("/mainpage", main);
 app.use("/boards", board);
