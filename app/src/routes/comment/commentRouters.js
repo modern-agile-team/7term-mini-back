@@ -22,7 +22,7 @@ router.get(
 );
 
 router.delete(
-  "/comments",
+  "/:board_no/comments/:no",
   Middleware.tokenProcess.accessToken,
   validation.checkDeleteComment,
   ctrl.process.deleteComment

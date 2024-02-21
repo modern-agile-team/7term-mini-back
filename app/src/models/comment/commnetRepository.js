@@ -31,7 +31,7 @@ class CommentRepository {
   }
 
   static showContent(insertId) {
-    const query = "select content from comment where no =?;";
+    const query = "select content,created_at from comment where no =?;";
     return db.query(query, [insertId]);
   }
 

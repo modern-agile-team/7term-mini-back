@@ -7,7 +7,6 @@ class CommentService {
     this.body = req.body;
     this.params = req.params;
     this.user = req.user;
-    this.query = req.query;
   }
   async addComments() {
     const boardNo = this.params.board_no;
@@ -36,16 +35,27 @@ class CommentService {
       userNo,
       comments
     );
-    const [raws, fields] = await CommentRepository.showContent(
+    const [rows, fields] = await CommentRepository.showContent(
       response[0].insertId
     );
 
-    return {statuscode: 201, raws: raws[0]};
+    return {statuscode: 201, rows: rows[0]};
   }
   async deleteComment() {
-    const commentNo = Number(this.query.no);
+    const commentNo = this.params.no;
     const userNo = this.user.no;
-    let error = await CommentRepository.checkCommentNo(commentNo);
+    const boardNo = this.params.board_no;
+
+    let error = await BoardRepository.checkBoardNo(boardNo);
+    if (!error[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 게시글이 존재하지 않습니다.",
+        statuscode: 404,
+      };
+    }
+
+    error = await CommentRepository.checkCommentNo(commentNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -64,16 +74,16 @@ class CommentService {
         statuscode: 403,
       };
     }
+
     const deleteResult = await CommentRepository.deleteComment(commentNo);
-    if (deleteResult[0].affectedRows) {
-      return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
-    } else {
+    if (!deleteResult[0].affectedRows) {
       return {
         error: "Internal Server Error",
         message: "삭제가 되지 않았습니다.",
         statuscode: 500,
       };
     }
+    return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
   }
   async getComments() {
     const boardNo = this.params.board_no;
