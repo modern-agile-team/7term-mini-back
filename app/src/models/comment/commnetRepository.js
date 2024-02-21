@@ -9,9 +9,9 @@ class CommentRepository {
     return db.query(query, [boardNo, userNo, comments]);
   }
 
-  static deleteComment(no) {
+  static deleteComment(commentNo) {
     const query = "delete from comment where no = ?;";
-    return db.query(query, [no]);
+    return db.query(query, [commentNo]);
   }
 
   static getComments(boardNo) {
@@ -35,9 +35,9 @@ class CommentRepository {
     return db.query(query, [insertId]);
   }
 
-  static checkCommentOwner(userNo, no) {
+  static checkCommentOwner(userNo, commentNo) {
     const query = "select user_no from comment where user_no=? and no = ?;";
-    return db.query(query, [userNo, no]);
+    return db.query(query, [userNo, commentNo]);
   }
 }
 

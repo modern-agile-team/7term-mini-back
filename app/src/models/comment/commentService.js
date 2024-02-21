@@ -55,7 +55,7 @@ class CommentService {
     }
     const checkCommentOwner = await CommentRepository.checkCommentOwner(
       userNo,
-      no
+      commentNo
     );
     if (!checkCommentOwner[0][0]) {
       return {
@@ -64,9 +64,8 @@ class CommentService {
         statuscode: 403,
       };
     }
-    const deleteResult = await CommentRepository.deleteComment(no);
-    console.log(deleteResult);
-    if (deleteResult[0].affectedRows === 1) {
+    const deleteResult = await CommentRepository.deleteComment(commentNo);
+    if (deleteResult[0].affectedRows) {
       return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
     } else {
       return {
