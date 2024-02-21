@@ -11,6 +11,14 @@ class AuthService {
     this.headers = req.headers;
     this.user = req.user;
   };
+  async logout() {
+    const accessToken = this.user;
+    const logoutResult = await AuthRepository.deleteRefreshToken(accessToken.no);
+    if (!logoutResult[0].affectedRows) {
+      return { error: "Internal Server Error", message: "로그아웃에 실패하였습니다.", statuscode: 500 };
+    }
+    return { statusCode: 201, message: "로그아웃에 성공하였습니다." };
+  }
 
   async login() {
     const loginRequestBody = this.body;

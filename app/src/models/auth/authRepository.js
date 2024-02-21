@@ -18,5 +18,10 @@ class AuthStorage {
     const [users, field] = await db.query(query, [clientRefreshToken]);
     return users[0];
   };
+
+  static deleteRefreshToken(userNo) {
+    const query = "DELETE FROM token WHERE user_no = ?;"
+    return db.query(query, [userNo]);
+  }
 };
 export default AuthStorage;
