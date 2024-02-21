@@ -1,24 +1,23 @@
 "use strict";
 
 import db from "../../config/db.js";
-// import { resolve }  from "path"
-// import { reject, log } from "async";
 
 class AuthStorage {
-  static async check(userId, userPassWord) {
+  static async findUsers(userId, userPassWord) {
     const query = "SELECT * FROM user WHERE id = ? AND password = ?;";
-    const [rows, fields] = await db.query(query, [userId, userPassWord]);
-    return rows;
-  }
-  static async tokenSave(userNo, userRefreshToken) {
+    const [users, field] = await db.query(query, [userId, userPassWord]);
+    return users[0];
+  };
+
+  static tokenSave(userNo, userRefreshToken) {
     const query = "INSERT INTO token (`user_no`, `refresh_token`) VALUES (?, ?)";
-    const [rows, fields] = await db.query(query, [userNo, userRefreshToken]);
-    return rows;
-  }
+    return db.query(query, [userNo, userRefreshToken]);
+  };
+
   static async refreshTokenCheck(clientRefreshToken) {
     const query = "SELECT * FROM token WHERE refresh_token = ?;";
-    const [rows, fields] = await db.query(query, [clientRefreshToken]);
-    return rows;
-  }
-}
+    const [users, field] = await db.query(query, [clientRefreshToken]);
+    return users[0];
+  };
+};
 export default AuthStorage;

@@ -9,7 +9,7 @@ class CommentRepository {
     return db.query(query, [boardNo, userNo, comments]);
   }
 
-  static deleteComments(no) {
+  static deleteComment(no) {
     const query = "delete from comment where no = ?;";
     return db.query(query, [no]);
   }
@@ -30,7 +30,7 @@ class CommentRepository {
     return db.query(query, [no]);
   }
 
-  static showComment(insertId) {
+  static showContent(insertId) {
     const query = "select content from comment where no =?;";
     return db.query(query, [insertId]);
   }

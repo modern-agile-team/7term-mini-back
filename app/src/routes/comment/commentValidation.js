@@ -4,7 +4,7 @@ import {param, body, query, validationResult} from "express-validator";
 
 export default {
   checkAddComments: async (req, res, next) => {
-    await param("board_no", "게시글 번호는 자연수이어야 합니다.")
+    await param("boardNo", "게시글 번호는 자연수이어야 합니다.")
       .isInt({min: 1})
       .run(req);
     await body("content", "댓글은 1자이상 100자 이하이어야 합니다.")
@@ -36,7 +36,7 @@ export default {
     }
     next();
   },
-  checkDeleteComments: async (req, res, next) => {
+  checkDeleteComment: async (req, res, next) => {
     await query("no", "댓글 고유 번호는 자연수이어야 합니다.")
       .isInt({min: 1})
       .run(req);

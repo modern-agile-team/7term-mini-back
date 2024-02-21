@@ -24,8 +24,8 @@ router.get(
 router.delete(
   "/",
   Middleware.tokenProcess.accessToken,
-  validation.checkDeleteComments,
-  ctrl.process.deleteComments
+  validation.checkDeleteComment,
+  ctrl.process.deleteComment
 );
 
 export default router;

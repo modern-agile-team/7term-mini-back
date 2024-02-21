@@ -36,13 +36,13 @@ class CommentService {
       userNo,
       comments
     );
-    const [raws, fields] = await CommentRepository.showComment(
+    const [raws, fields] = await CommentRepository.showContent(
       response[0].insertId
     );
 
     return {statuscode: 201, raws: raws[0]};
   }
-  async deleteComments() {
+  async deleteComment() {
     const no = Number(this.query.no);
     const userNo = this.user.no;
     let error = await CommentRepository.checkNo(no);
@@ -65,7 +65,7 @@ class CommentService {
         statuscode: 403,
       };
     }
-    const deleteResult = await CommentRepository.deleteComments(no);
+    const deleteResult = await CommentRepository.deleteComment(no);
     console.log(deleteResult);
     if (deleteResult[0].affectedRows === 1) {
       return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
