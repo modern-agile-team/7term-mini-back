@@ -23,7 +23,7 @@ app.use(express.json({extended: true}));
 
 app.use("/auth", user);
 app.use("/auth", auth);
-app.use("/comments", comment);
+app.use("/boards", comment);
 app.use("/loves", love);
 app.use("/mainpage", main);
 app.use("/boards", board);

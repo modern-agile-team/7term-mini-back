@@ -6,20 +6,20 @@ class JwtToken {
     return jwt.sign(id, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "5m",
     });
-  };
+  }
 
   static createRefreshToken(id) {
     return jwt.sign(id, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: "24h"
+      expiresIn: "24h",
     });
-  };
+  }
 
   static verifyRefreshToken(token) {
     try {
       return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
     } catch (err) {
-      return { error: 'Unauthorized', message: err.message, statusCode: 401 };
-    };
-  };
-};
+      return {error: "Unauthorized", message: err.message, statusCode: 401};
+    }
+  }
+}
 export default JwtToken;

@@ -46,7 +46,6 @@ class CommentService {
     const no = Number(this.query.no);
     const userNo = this.user.no;
     let error = await CommentRepository.checkNo(no);
-    console.log(error);
     if (!error[0][0]) {
       return {
         error: "Not Found",
