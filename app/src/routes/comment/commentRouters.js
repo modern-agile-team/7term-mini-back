@@ -8,24 +8,24 @@ import Middleware from "../auth/authMiddleware.js";
 const router = express.Router();
 
 router.post(
-  "/:board_no",
+  "/:boardNo/comments",
   Middleware.tokenProcess.accessToken,
   validation.checkAddComments,
   ctrl.process.addComments
 );
 
 router.get(
-  "/:board_no",
+  "/:boardNo/comments",
   Middleware.tokenProcess.accessToken,
   validation.checkGetComments,
   ctrl.process.getComments
 );
 
 router.delete(
-  "/",
+  "/:boardNo/comments/:no",
   Middleware.tokenProcess.accessToken,
-  validation.checkDeleteComments,
-  ctrl.process.deleteComments
+  validation.checkDeleteComment,
+  ctrl.process.deleteComment
 );
 
 export default router;

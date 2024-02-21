@@ -1,7 +1,7 @@
 "use strict";
 
 import CommentRepository from "./commnetRepository.js";
-
+import BoardRepository from "../board/boardRepository.js";
 class CommentService {
   constructor(req) {
     this.body = req.body;
@@ -9,11 +9,11 @@ class CommentService {
     this.user = req.user;
   }
   async addComments() {
-    const boardNo = this.params.board_no;
+    const boardNo = this.params.boardNo;
     const userNo = this.user.no;
     const comments = this.body.content;
 
-    let error = await CommentRepository.checkBoardNO(boardNo);
+    let error = await BoardRepository.checkBoardNo(boardNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -21,7 +21,7 @@ class CommentService {
         statuscode: 404,
       };
     }
-    error = await CommentRepository.checkUserNO(userNo);
+    error = await CommentRepository.checkUserNo(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -35,16 +35,18 @@ class CommentService {
       userNo,
       comments
     );
-    const [rows, fields] = await CommentRepository.showComment(
+    const [rows, fields] = await CommentRepository.showContent(
       response[0].insertId
     );
 
     return {statuscode: 201, rows: rows[0]};
   }
-  async deleteComments() {
-    const no = this.body.no;
+
+  async deleteComment() {
+    const commentNo = this.params.no;
     const userNo = this.user.no;
-    let error = await CommentRepository.checkNO(no);
+
+    let error = await CommentRepository.checkCommentNo(commentNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -54,7 +56,7 @@ class CommentService {
     }
     const checkCommentOwner = await CommentRepository.checkCommentOwner(
       userNo,
-      no
+      commentNo
     );
     if (!checkCommentOwner[0][0]) {
       return {
@@ -63,13 +65,22 @@ class CommentService {
         statuscode: 403,
       };
     }
-    await CommentRepository.deleteComments(no);
+
+    const deleteResult = await CommentRepository.deleteComment(commentNo);
+    if (!deleteResult[0].affectedRows) {
+      return {
+        error: "Internal Server Error",
+        message: "삭제가 되지 않았습니다.",
+        statuscode: 500,
+      };
+    }
+
     return {message: "댓글이 성공적으로 삭제됐습니다.", statuscode: 200};
   }
+
   async getComments() {
-    const boardNo = this.params.board_no;
-    const no = this.body.no;
-    let error = await CommentRepository.checkBoardNO(boardNo);
+    const boardNo = this.params.boardNo;
+    let error = await BoardRepository.checkBoardNo(boardNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",

@@ -9,9 +9,9 @@ class CommentRepository {
     return db.query(query, [boardNo, userNo, comments]);
   }
 
-  static deleteComments(no) {
+  static deleteComment(commentNo) {
     const query = "delete from comment where no = ?;";
-    return db.query(query, [no]);
+    return db.query(query, [commentNo]);
   }
 
   static getComments(boardNo) {
@@ -20,29 +20,24 @@ class CommentRepository {
     return db.query(query, [boardNo, boardNo]);
   }
 
-  static checkUserNO(userNo) {
+  static checkUserNo(userNo) {
     const query = "select no from user where no = ?;";
     return db.query(query, [userNo]);
   }
 
-  static checkNO(no) {
+  static checkCommentNo(commentNo) {
     const query = "select no from comment where no = ?;";
-    return db.query(query, [no]);
+    return db.query(query, [commentNo]);
   }
 
-  static checkBoardNO(boardNo) {
-    const query = "select no from board where no = ?;";
-    return db.query(query, [boardNo]);
-  }
-
-  static showComment(insertId) {
-    const query = "select content from comment where no =?;";
+  static showContent(insertId) {
+    const query = "select content,created_at from comment where no =?;";
     return db.query(query, [insertId]);
   }
 
-  static checkCommentOwner(userNo, no) {
+  static checkCommentOwner(userNo, commentNo) {
     const query = "select user_no from comment where user_no=? and no = ?;";
-    return db.query(query, [userNo, no]);
+    return db.query(query, [userNo, commentNo]);
   }
 }
 

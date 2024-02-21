@@ -8,9 +8,9 @@ const process = {
     const response = await comment.addComments();
     return res.status(response.statuscode).json(response);
   },
-  deleteComments: async (req, res) => {
+  deleteComment: async (req, res) => {
     const comment = new CommentService(req);
-    const response = await comment.deleteComments();
+    const response = await comment.deleteComment();
     return res.status(response.statuscode).json(response);
   },
   getComments: async (req, res) => {
