@@ -32,9 +32,12 @@ class AuthService {
     };
 
     const [users, field] = await AuthRepository.getUser(loginRequestBody.id);
+    if (!users[0]) {
+      return { error: 'Not Found', message: "아이디가 틀렸습니다.", statusCode: 404 };
+    }
     const match = await bcrypt.compare(loginRequestBody.password, users[0].password);
     if (!match) {
-      return { error: 'Not Found', message: "유저 정보가 없습니다.", statusCode: 404 };
+      return { error: 'Not Found', message: "패스워드가 틀렸습니다.", statusCode: 404 };
     };
 
     const accessToken = JwtService.createAccessToken({ id: users[0].id, no: users[0].no });
