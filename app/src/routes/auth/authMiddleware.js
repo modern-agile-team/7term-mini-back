@@ -4,10 +4,16 @@ import jwt from "jsonwebtoken";
 
 const tokenProcess = {
   accessToken: async (req, res, next) => {
+
     const token = req.headers['authorization'];
 
+
     if (!token) {
-      const response = { error: 'Bad Request', message: "토큰이 없습니다.", statusCode: 400 };
+      const response = {
+        error: "Bad Request",
+        message: "토큰이 없습니다.",
+        statusCode: 400,
+      };
       return res.status(response.statusCode).json(response);
     };
 

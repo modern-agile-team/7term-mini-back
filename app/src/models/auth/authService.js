@@ -2,6 +2,7 @@
 
 import AuthRepository from "./authRepository.js";
 import JwtService from "./jwtService.js";
+import bcrypt from "bcrypt";
 
 class AuthService {
   constructor(req) {
@@ -22,24 +23,18 @@ class AuthService {
       return { error: 'Bad Request', message: "비밀번호가 공백입니다.", statusCode: 400 };
     };
 
-    const userInfo = await AuthRepository.findUsers(loginRequestBody.id, loginRequestBody.password);
-    if (!userInfo[0][0]) {
+    const [users, field] = await AuthRepository.getUser(loginRequestBody.id);
+    const match = await bcrypt.compare(loginRequestBody.password, users[0].password);
+    if (!match) {
       return { error: 'Not Found', message: "유저 정보가 없습니다.", statusCode: 404 };
     };
 
-    const accessToken = JwtService.createAccessToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
-    const refreshToken = JwtService.createRefreshToken({ id: userInfo[0][0].id, no: userInfo[0][0].no });
-    AuthRepository.tokenSave(userInfo[0][0].no, refreshToken);
+    const accessToken = JwtService.createAccessToken({ id: users[0].id, no: users[0].no });
+    const refreshToken = JwtService.createRefreshToken({ id: users[0].id, no: users[0].no });
+    await AuthRepository.tokenSave(users[0].no, refreshToken);
 
-    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: userInfo[0][0].nickname, statusCode: 201 };
+    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: users[0].nickname, statusCode: 201 };
   };
-  async logout() {
-    const logoutRequestUser = this.user;
-
-    await AuthRepository.deleteRefreshToken(logoutRequestUser.no);
-
-    return { message: "로그아웃에 성공하였습니다.", statusCode: 200 };
-  }
 
   async newAccessToken() {
     const authorization = this.headers['authorization'];
@@ -54,12 +49,11 @@ class AuthService {
     };
 
     const refreshToken = await AuthRepository.refreshTokenCheck(clientRefreshToken); // DB상에서 토큰 여부 검사
-
-    if (!refreshToken[0][0]) {
+    if (!refreshToken) {
       return { error: 'Not Found', message: "유저의 토큰 정보가 없습니다.", statusCode: 404 };
     };
 
-    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken[0][0].refresh_token); // 받은 토큰의 유효기간 검사.
+    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken.refresh_token); // 받은 토큰의 유효기간 검사.
     if (userRefreshTokenPayload.error) {
       return userRefreshTokenPayload;
     };
