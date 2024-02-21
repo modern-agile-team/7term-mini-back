@@ -2,6 +2,7 @@
 
 import AuthRepository from "./authRepository.js";
 import JwtService from "./jwtService.js";
+import bcrypt from "bcrypt";
 
 class AuthService {
   constructor(req) {
@@ -21,15 +22,17 @@ class AuthService {
       return { error: 'Bad Request', message: "비밀번호가 공백입니다.", statusCode: 400 };
     };
 
-    const userInfo = await AuthRepository.findUsers(loginRequestBody.id, loginRequestBody.password);
-    if (!userInfo) {
+    const [users, field] = await AuthRepository.getUser(loginRequestBody.id);
+    const match = await bcrypt.compare(loginRequestBody.password, users[0].password);
+    if (!match) {
       return { error: 'Not Found', message: "유저 정보가 없습니다.", statusCode: 404 };
     };
 
-    const accessToken = JwtService.createAccessToken({ id: userInfo.id, no: userInfo.no });
-    const refreshToken = JwtService.createRefreshToken({ id: userInfo.id, no: userInfo.no });
-    await AuthRepository.tokenSave(userInfo.no, refreshToken);
-    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: userInfo.nickname, statusCode: 201 };
+    const accessToken = JwtService.createAccessToken({ id: users[0].id, no: users[0].no });
+    const refreshToken = JwtService.createRefreshToken({ id: users[0].id, no: users[0].no });
+    await AuthRepository.tokenSave(users[0].no, refreshToken);
+
+    return { message: "로그인에 성공하였습니다.", accessToken, refreshToken, userNickName: users[0].nickname, statusCode: 201 };
   };
 
   async newAccessToken() {

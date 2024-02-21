@@ -2,7 +2,7 @@
 
 import db from "../../config/db.js";
 
-class UserStorage {
+class UserRepository {
   static async findUsers(id, nickname) {
     const query = "SELECT * FROM user WHERE id = ? OR nickname = ?;";
     const [rows, fields] = await db.query(query, [id, nickname]);
@@ -20,5 +20,10 @@ class UserStorage {
     ]);
     return rows;
   }
+
+  static delete(userNo) {
+    const query = "DELETE FROM user WHERE no = ?;";
+    return db.query(query, [userNo]);
+  }
 }
-export default UserStorage;
+export default UserRepository;

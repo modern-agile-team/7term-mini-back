@@ -3,10 +3,9 @@
 import db from "../../config/db.js";
 
 class AuthStorage {
-  static async findUsers(userId, userPassWord) {
-    const query = "SELECT * FROM user WHERE id = ? AND password = ?;";
-    const [users, field] = await db.query(query, [userId, userPassWord]);
-    return users[0];
+  static getUser(userId) {
+    const query = "SELECT * FROM user WHERE id = ?;";
+    return db.query(query, [userId]);
   };
 
   static tokenSave(userNo, userRefreshToken) {

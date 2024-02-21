@@ -1,68 +1,28 @@
 "use strict";
 
-import UserStorage from "./userRepository.js";
+import UserRepository from "./userRepository.js";
 import bcrypt from "bcrypt";
 
 class UserService {
   constructor(req) {
     this.body = req.body;
     this.params = req.params;
+    this.user = req.user;
   }
 
-  //validator를 통해 유효성 검사는 앞 단에서 이미 마쳤음, 아래 구문들 라우트단과 확인하며 삭제할것
+  async deleteUser() {
+    const clientInfo = this.user;
+    const deleteUserResult = await UserRepository.delete(clientInfo.no);
+    if (!deleteUserResult) {
+      return { error: "Internal Server Error", message: "회원탈퇴에 실패하였습니다.", statuscode: 500 };
+    }
+    return { statusCode: 201, message: "회원탈퇴에 성공하였습니다." };
+  }
+
   async createUser() {
     const clientInfo = this.body;
-    if (!clientInfo.nickname) {
-      return {
-        error: "Bad Request",
-        message: "닉네임이 공백입니다.",
-        statusCode: 400,
-      };
-    }
-    if (!clientInfo.id) {
-      return {
-        error: "Bad Request",
-        message: "아이디가 공백입니다.",
-        statusCode: 400,
-      };
-    }
-    if (!clientInfo.password) {
-      return {
-        error: "Bad Request",
-        message: "비밀번호가 공백입니다.",
-        statusCode: 400,
-      };
-    }
-    if (!clientInfo.email) {
-      return {
-        error: "Bad Request",
-        message: "이메일이 공백입니다.",
-        statusCode: 400,
-      };
-    }
-    if (clientInfo.nickname.length > 12) {
-      return {
-        error: "Bad Request",
-        message: "닉네임이 12자 이상입니다.",
-        statusCode: 400,
-      };
-    }
-    if (clientInfo.id.length > 15) {
-      return {
-        error: "Bad Request",
-        message: "아이디가 15자 이상입니다.",
-        statusCode: 400,
-      };
-    }
-    if (clientInfo.email.length > 30) {
-      return {
-        error: "Bad Request",
-        message: "이메일이 30자 이상입니다.",
-        statusCode: 400,
-      };
-    }
 
-    const users = await UserStorage.findUsers(
+    const users = await UserRepository.findUsers(
       clientInfo.id,
       clientInfo.nickname
     );
@@ -88,7 +48,7 @@ class UserService {
     const hashPassword = bcrypt.hashSync(clientInfo.password, salt);
 
     try {
-      await UserStorage.save(
+      await UserRepository.save(
         clientInfo.nickname,
         clientInfo.id,
         hashPassword,
