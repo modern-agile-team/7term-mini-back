@@ -25,9 +25,9 @@ class CommentRepository {
     return db.query(query, [userNo]);
   }
 
-  static checkNo(no) {
+  static checkCommentNo(commentNo) {
     const query = "select no from comment where no = ?;";
-    return db.query(query, [no]);
+    return db.query(query, [commentNo]);
   }
 
   static showContent(insertId) {

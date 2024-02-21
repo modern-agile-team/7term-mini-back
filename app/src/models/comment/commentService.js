@@ -43,9 +43,9 @@ class CommentService {
     return {statuscode: 201, raws: raws[0]};
   }
   async deleteComment() {
-    const no = Number(this.query.no);
+    const commentNo = Number(this.query.no);
     const userNo = this.user.no;
-    let error = await CommentRepository.checkNo(no);
+    let error = await CommentRepository.checkCommentNo(commentNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
