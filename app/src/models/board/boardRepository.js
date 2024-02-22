@@ -1,6 +1,12 @@
 import db from "../../config/db.js";
 
 export default class BoardRepository {
+  static findOneBoard(boardNo) {
+    const query = "SELECT * FROM board WHERE no = ?";
+
+    return db.query(query, [boardNo]);
+  }
+
   static apppendBoard(userNo, categoryNo, content) {
     const query =
       "INSERT INTO board(user_no, category_no, content) VALUES (?, ?, ?);";
@@ -35,27 +41,52 @@ export default class BoardRepository {
     return db.query(query, [categoryNo, content, boardNo]);
   }
 
-  static checkUserNo(userNo) {
-    const query = "SELECT no FROM user WHERE no = ?";
+  static getBoardsCount(categoryNo) {
+    let where = "";
 
-    return db.query(query, [userNo]);
+    if (categoryNo) {
+      where = `WHERE board.category_no = ${categoryNo}`;
+    }
+
+    const query = `
+    SELECT count(*) AS board_count 
+    FROM board
+    ${where};`;
+
+    return db.query(query);
   }
 
-  static checkBoardNo(boardNo) {
-    const query = "SELECT no FROM board WHERE no = ?";
+  static getBoardsAndLoveCountAndCommentCount(pageNo, pages, categoryNo) {
+    let where = "";
 
-    return db.query(query, [boardNo]);
+    // 0을 주면 전체 게시글을 불러옴
+    if (categoryNo) {
+      where = `WHERE b.category_no = ${categoryNo}`;
+    }
+
+    const query = `SELECT b.no, c.no as category_no, c.name as category_name, u.nickname, b.content, b.created_at, b.updated_at, 
+    COUNT(DISTINCT co.no) as comment_count,
+    COUNT(DISTINCT bl.no) as love_count
+    FROM board as b
+    LEFT JOIN user as u
+    ON b.user_no = u.no
+      LEFT JOIN comment as co
+      ON co.board_no = b.no
+      LEFT JOIN board_love as bl
+      ON bl.board_no = b.no
+      LEFT JOIN category as c
+      ON b.category_no = c.no
+      ${where}
+      group by b.no
+      order by b.no DESC limit ?, ?;`;
+
+    return db.query(query, [pageNo, pages]);
   }
 
-  static checkCategoryNo(categoryNo) {
+  //사실 여기있으면 안되긴해..
+  static findCategoryNo(categoryNo) {
     const query = "SELECT no FROM category WHERE no = ?";
 
     return db.query(query, [categoryNo]);
-  }
-
-  static checkBoardOwner(boardNo) {
-    const query = "SELECT user_no as userNo FROM board WHERE no = ?";
-
-    return db.query(query, [boardNo]);
   }
 }

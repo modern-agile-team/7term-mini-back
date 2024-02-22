@@ -1,4 +1,4 @@
-import {body, param, validationResult} from "express-validator";
+import {query, body, param, validationResult} from "express-validator";
 
 export default {
   checkBeforePost: async (req, res, next) => {
@@ -77,6 +77,32 @@ export default {
       .bail()
       .isLength({max: 250})
       .withMessage("내용은 250자 이내여야 합니다.")
+      .run(req);
+
+    const error = validationResult(req).errors[0];
+
+    if (error) {
+      return res
+        .status(400)
+        .json({error: "Bad Request", message: error.msg, statusCode: 400});
+    }
+
+    next();
+  },
+  checkBoards: async (req, res, next) => {
+    await query("currentPage", "현재 페이지 값은 자연수가 들어가야합니다.")
+      .isInt({min: 1})
+      .run(req);
+
+    await query(
+      "categoryNo",
+      "카테고리 번호는 0(전체), 자연수가 들어가야합니다."
+    )
+      .isInt({min: 0})
+      .run(req);
+
+    await query("pageSize", "선택할 페이지 개수는 자연수가 들어가야합니다.")
+      .isInt({min: 1})
       .run(req);
 
     const error = validationResult(req).errors[0];

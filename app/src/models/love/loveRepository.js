@@ -18,11 +18,6 @@ class LoveRepository {
       "select user_no, no from board_love where board_no =? and user_no = ?;";
     return db.query(query, [boardNo, userNo]);
   }
-
-  static isUserNo(userNo) {
-    const query = "select no from user where no = ?;";
-    return db.query(query, [userNo]);
-  }
 }
 
 export default LoveRepository;

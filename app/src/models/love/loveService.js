@@ -2,6 +2,7 @@
 
 import LoveRepository from "./loveRepository.js";
 import BoardRepository from "../board/boardRepository.js";
+import UserRepository from "../user/userRepository.js";
 
 class LoveService {
   constructor(req) {
@@ -15,7 +16,7 @@ class LoveService {
       boardNo,
       userNo
     );
-    let error = await BoardRepository.checkBoardNo(boardNo);
+    let error = await BoardRepository.findOneBoard(boardNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -23,7 +24,7 @@ class LoveService {
         statuscode: 404,
       };
     }
-    error = await LoveRepository.isUserNo(userNo);
+    error = await UserRepository.findOneUser(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -50,7 +51,7 @@ class LoveService {
       boardNo,
       userNo
     );
-    let error = await BoardRepository.checkBoardNo(boardNo);
+    let error = await BoardRepository.findOneBoard(boardNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -58,7 +59,7 @@ class LoveService {
         statuscode: 404,
       };
     }
-    error = await LoveRepository.isUserNo(userNo);
+    error = await UserRepository.findOneUser(userNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
