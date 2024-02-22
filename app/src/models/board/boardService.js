@@ -4,15 +4,15 @@ export default class BoardService {
   constructor(req) {
     this.body = req.body;
     this.params = req.params;
-    this.headers = req.headers;
     this.user = req.user;
+    this.query = req.query;
   }
 
   async appendBoard() {
     const userNo = this.user.no;
     const {categoryNo, content} = this.body;
 
-    const error = await BoardRepository.checkCategoryNo(categoryNo);
+    const error = await BoardRepository.findCategoryNo(categoryNo);
 
     if (!error[0][0]) {
       return {
@@ -22,26 +22,30 @@ export default class BoardService {
       };
     }
 
-    const response = await BoardRepository.apppendBoard(
+    const appendResult = await BoardRepository.apppendBoard(
       userNo,
       categoryNo,
       content
     );
 
-    const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
-      response[0].insertId
-    );
+    if (appendResult[0].affectedRows) {
+      return {message: "게시글이 생성됐습니다.", statusCode: 201};
+    }
 
-    return {board: newBoard[0][0], statusCode: 201};
+    return {
+      error: "Internal Server Error",
+      message: "게시글을 삭제하는 중 알수없는 에러가 발생했습니다.",
+      statusCode: 500,
+    };
   }
 
   async deleteBoard() {
     const userNo = this.user.no;
     const boardNo = this.params.boardNo;
 
-    const error = await BoardRepository.checkBoardNo(boardNo);
+    const [rows, feilds] = await BoardRepository.findOneBoard(boardNo);
 
-    if (!error[0][0]) {
+    if (!rows[0]) {
       return {
         error: "Not Found",
         message: "해당 번호의 게시글은 등록되어있지 않습니다.",
@@ -49,9 +53,7 @@ export default class BoardService {
       };
     }
 
-    const checkUserNo = await BoardRepository.checkBoardOwner(boardNo);
-
-    if (userNo !== checkUserNo[0][0].userNo) {
+    if (userNo !== rows[0].user_no) {
       return {
         error: "Forbidden",
         message: "자신이 쓴 게시글만 삭제 할 수 있습니다.",
@@ -59,9 +61,17 @@ export default class BoardService {
       };
     }
 
-    await BoardRepository.deleteBoard(boardNo);
+    const deleteResult = await BoardRepository.deleteBoard(boardNo);
 
-    return {message: "정상적으로 삭제됐습니다.", statusCode: 200};
+    if (deleteResult[0].affectedRows) {
+      return {message: "게시글이 정상적으로 삭제됐습니다.", statusCode: 200};
+    }
+
+    return {
+      error: "Internal Server Error",
+      message: "게시글을 삭제하는 중 알수없는 에러가 발생했습니다.",
+      statusCode: 500,
+    };
   }
 
   async findOneBoardWithNicknameAndLoveCount() {
@@ -86,9 +96,9 @@ export default class BoardService {
     const {categoryNo, content} = this.body;
     const userNo = this.user.no;
 
-    let error = await BoardRepository.checkBoardNo(boardNo);
+    const [rows, feilds] = await BoardRepository.findOneBoard(boardNo);
 
-    if (!error[0][0]) {
+    if (!rows[0]) {
       return {
         error: "Not Found",
         message: "해당 번호의 게시글은 등록되어있지 않습니다.",
@@ -96,19 +106,7 @@ export default class BoardService {
       };
     }
 
-    error = await BoardRepository.checkCategoryNo(categoryNo);
-
-    if (!error[0][0]) {
-      return {
-        error: "Not Found",
-        message: "해당 번호의 카테고리는 등록되어있지 않습니다.",
-        statusCode: 404,
-      };
-    }
-
-    const checkUserNo = await BoardRepository.checkBoardOwner(boardNo);
-
-    if (userNo !== checkUserNo[0][0].userNo) {
+    if (userNo !== rows[0].user_no) {
       return {
         error: "Forbidden",
         message: "자신이 쓴 게시글만 수정 할 수 있습니다.",
@@ -116,12 +114,61 @@ export default class BoardService {
       };
     }
 
-    await BoardRepository.updateBoard(boardNo, categoryNo, content);
+    const checkCategoryNo = await BoardRepository.findCategoryNo(categoryNo);
 
-    const newBoard = await BoardRepository.findOneBoardWithNicknameAndLoveCount(
-      boardNo
+    if (!checkCategoryNo[0][0]) {
+      return {
+        error: "Not Found",
+        message: "해당 번호의 카테고리는 등록되어있지 않습니다.",
+        statusCode: 404,
+      };
+    }
+
+    const updateResult = await BoardRepository.updateBoard(
+      boardNo,
+      categoryNo,
+      content
     );
 
-    return {board: newBoard[0][0], statusCode: 200};
+    if (updateResult[0].affectedRows) {
+      return {message: "게시물이 수정이 완료됐습니다.", statusCode: 200};
+    }
+
+    return {
+      error: "Internal Server Error",
+      message: "게시글을 수정하는 중 알수없는 에러가 발생했습니다.",
+      statusCode: 500,
+    };
+  }
+
+  async getBoardsAndLoveCountAndCommentCount() {
+    const pageSize = Number(this.query.pageSize);
+    const categoryNo = Number(this.query.categoryNo);
+    const currentPage = (Number(this.query.currentPage) - 1) * pageSize;
+
+    const boardsCount = await BoardRepository.getBoardsCount(categoryNo);
+
+    const numberAllPages = Math.ceil(boardsCount[0][0].board_count / pageSize);
+
+    const checkCategoryNo = await BoardRepository.findCategoryNo(categoryNo);
+
+    if (categoryNo !== 0) {
+      if (!checkCategoryNo[0][0]) {
+        return {
+          error: "Not Found",
+          message: "해당 카테고리는 없습니다.",
+          statusCode: 404,
+        };
+      }
+    }
+
+    const [rows, fields] =
+      await BoardRepository.getBoardsAndLoveCountAndCommentCount(
+        currentPage,
+        pageSize,
+        categoryNo
+      );
+
+    return {boards: rows, wholePage: numberAllPages, statusCode: 200};
   }
 }

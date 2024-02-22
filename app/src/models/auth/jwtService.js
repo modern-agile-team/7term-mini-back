@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 class JwtToken {
   static createAccessToken(id) {
     return jwt.sign(id, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "30m",
     });
   }
 

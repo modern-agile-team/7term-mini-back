@@ -20,11 +20,6 @@ class CommentRepository {
     return db.query(query, [boardNo, boardNo]);
   }
 
-  static checkUserNo(userNo) {
-    const query = "select no from user where no = ?;";
-    return db.query(query, [userNo]);
-  }
-
   static checkCommentNo(commentNo) {
     const query = "select no from comment where no = ?;";
     return db.query(query, [commentNo]);

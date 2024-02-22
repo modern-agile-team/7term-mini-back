@@ -13,19 +13,11 @@ class CommentService {
     const userNo = this.user.no;
     const comments = this.body.content;
 
-    let error = await BoardRepository.checkBoardNo(boardNo);
+    let error = await BoardRepository.findOneBoard(boardNo);
     if (!error[0][0]) {
       return {
         error: "Not Found",
         message: "해당 게시글이 존재하지 않습니다.",
-        statuscode: 404,
-      };
-    }
-    error = await CommentRepository.checkUserNo(userNo);
-    if (!error[0][0]) {
-      return {
-        error: "Not Found",
-        message: "해당 유저가 존재하지 않습니다.",
         statuscode: 404,
       };
     }
@@ -67,6 +59,7 @@ class CommentService {
     }
 
     const deleteResult = await CommentRepository.deleteComment(commentNo);
+
     if (!deleteResult[0].affectedRows) {
       return {
         error: "Internal Server Error",
@@ -80,7 +73,9 @@ class CommentService {
 
   async getComments() {
     const boardNo = this.params.boardNo;
-    let error = await BoardRepository.checkBoardNo(boardNo);
+
+    let error = await BoardRepository.findOneBoard(boardNo);
+
     if (!error[0][0]) {
       return {
         error: "Not Found",
@@ -88,7 +83,9 @@ class CommentService {
         statuscode: 404,
       };
     }
+
     const [rows, fields] = await CommentRepository.getComments(boardNo);
+
     return {statuscode: 200, rows};
   }
 }

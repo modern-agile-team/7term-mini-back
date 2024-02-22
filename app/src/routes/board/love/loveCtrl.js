@@ -1,6 +1,6 @@
 "use strict";
 
-import LoveService from "../../models/love/loveService.js";
+import LoveService from "../../../models/love/loveService.js";
 
 const process = {
   addLove: async (req, res) => {

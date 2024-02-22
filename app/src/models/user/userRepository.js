@@ -25,5 +25,16 @@ class UserRepository {
     const query = "DELETE FROM user WHERE no = ?;";
     return db.query(query, [userNo]);
   }
+
+  static getUser(userId) {
+    const query = "SELECT * FROM user WHERE id = ?;";
+    return db.query(query, [userId]);
+  }
+
+  static findOneUser(userNo) {
+    const query = "SELECT * FROM user WHERE no = ?;";
+    return db.query(query, [userNo]);
+  }
 }
+
 export default UserRepository;
