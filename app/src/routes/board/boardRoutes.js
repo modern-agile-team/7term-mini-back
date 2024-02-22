@@ -1,7 +1,11 @@
 import express from "express";
-import ctrl from "./boardCtrl.js";
-import validation from "./boardValidation.js";
+import boardCtrl from "./boardCtrl.js";
+import boardValidation from "./boardValidation.js";
 import middleware from "../auth/authMiddleware.js";
+import loveValidation from "./love/loveValidation.js";
+import loveCtrl from "./love/loveCtrl.js";
+import commentValidation from "./comment/commentValidation.js";
+import commentCtrl from "./comment/commentCtrl.js";
 
 const router = express.Router();
 
@@ -9,32 +13,79 @@ const router = express.Router();
 router.post(
   "/",
   middleware.tokenProcess.accessToken,
-  validation.checkBeforePost,
-  ctrl.appendBoard
+  boardValidation.checkBeforePost,
+  boardCtrl.appendBoard
 );
 
 //보드 삭제
 router.delete(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.checkBeforeDelete,
-  ctrl.deleteBoard
+  boardValidation.checkBeforeDelete,
+  boardCtrl.deleteBoard
 );
 
 //보드 조회
 router.get(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.checkBeforeGet,
-  ctrl.findOneBoardWithNicknameAndLoveCount
+  boardValidation.checkBeforeGet,
+  boardCtrl.findOneBoardWithNicknameAndLoveCount
 );
 
 //보드 수정
 router.put(
   "/:boardNo",
   middleware.tokenProcess.accessToken,
-  validation.checkBeforePut,
-  ctrl.updateBoard
+  boardValidation.checkBeforePut,
+  boardCtrl.updateBoard
+);
+
+//페이지 조회
+router.get(
+  "/",
+  middleware.tokenProcess.accessToken,
+  boardValidation.checkBoards,
+  boardCtrl.getBoardsAndLoveCountAndCommentCount
+);
+
+//좋아요 생성
+router.post(
+  "/:board_no/love",
+  middleware.tokenProcess.accessToken,
+  loveCtrl.process.addLove
+);
+
+//좋아요 삭제
+router.delete(
+  "/:board_no/love",
+  middleware.tokenProcess.accessToken,
+  loveValidation.checkBoardNo,
+  loveCtrl.process.deleteLove
+);
+
+//댓글 생성
+router.post(
+  "/:boardNo/comments",
+  middleware.tokenProcess.accessToken,
+  commentValidation.checkAddComments,
+  commentCtrl.process.addComments
+);
+
+//댓글 조회
+router.get(
+  "/:boardNo/comments",
+  middleware.tokenProcess.accessToken,
+  commentValidation.checkGetComments,
+  commentCtrl.process.getComments
+);
+
+//댓글 삭제
+router.delete(
+  "/:boardNo/comments/:no",
+  middleware.tokenProcess.accessToken,
+  commentValidation.checkDeleteComment,
+  commentCtrl.process.deleteComment
 );
 
 export default router;

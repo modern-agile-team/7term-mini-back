@@ -29,4 +29,12 @@ export default {
 
     res.status(response.statusCode).json(response);
   },
+
+  getBoardsAndLoveCountAndCommentCount: async (req, res) => {
+    const boardService = new BoardService(req);
+
+    const response = await boardService.getBoardsAndLoveCountAndCommentCount();
+
+    res.status(response.statusCode).json(response);
+  },
 };

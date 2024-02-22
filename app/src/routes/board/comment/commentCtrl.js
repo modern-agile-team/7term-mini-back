@@ -1,6 +1,6 @@
 "use strict";
 
-import CommentService from "../../models/comment/commentService.js";
+import CommentService from "../../../models/comment/commentService.js";
 
 const process = {
   addComments: async (req, res) => {
