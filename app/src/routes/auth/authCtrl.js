@@ -13,6 +13,11 @@ const process = {
     const response = await auth.newAccessToken();
     return res.json(response).status(response.statusCode);
   },
+  logout: async (req, res) => {
+    const auth = new AuthService(req);
+    const response = await auth.logout();
+    return res.json(response).status(response.statusCode)
+  }
 };
 export default {
   process,

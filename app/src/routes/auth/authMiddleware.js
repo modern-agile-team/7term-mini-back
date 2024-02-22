@@ -15,7 +15,6 @@ const tokenProcess = {
         statusCode: 400,
       };
       return res.status(response.statusCode).json(response);
-
     };
 
     const [type, clientAccessToken] = token.split(' ');
@@ -38,7 +37,6 @@ const tokenProcess = {
       return res.status(response.statusCode).json(response);
     };
   }
-
 };
 export default {
   tokenProcess,

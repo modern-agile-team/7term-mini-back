@@ -2,7 +2,7 @@
 
 import db from "../../config/db.js";
 
-class AuthStorage {
+class AuthRepository {
   static tokenSave(userNo, userRefreshToken) {
     const query =
       "INSERT INTO token (`user_no`, `refresh_token`) VALUES (?, ?)";
@@ -13,6 +13,11 @@ class AuthStorage {
     const query = "SELECT * FROM token WHERE refresh_token = ?;";
     const [users, field] = await db.query(query, [clientRefreshToken]);
     return users[0];
+  };
+
+  static deleteRefreshToken(userNo) {
+    const query = "DELETE FROM token WHERE user_no = ?;"
+    return db.query(query, [userNo]);
   }
-}
-export default AuthStorage;
+};
+export default AuthRepository;
