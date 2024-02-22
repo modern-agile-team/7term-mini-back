@@ -18,7 +18,7 @@ class AuthService {
       return { error: "Internal Server Error", message: "로그아웃에 실패하였습니다.", statuscode: 500 };
     }
     return { statusCode: 201, message: "로그아웃에 성공하였습니다." };
-  }
+  };
 
   async login() {
     const loginRequestBody = this.body;
@@ -33,11 +33,11 @@ class AuthService {
 
     const [users, field] = await AuthRepository.getUser(loginRequestBody.id);
     if (!users[0]) {
-      return { error: 'Not Found', message: "아이디가 틀렸습니다.", statusCode: 404 };
+      return { error: 'Not Found', message: "유저 정보가 없습니다 .", statusCode: 404 };
     }
     const match = await bcrypt.compare(loginRequestBody.password, users[0].password);
     if (!match) {
-      return { error: 'Not Found', message: "패스워드가 틀렸습니다.", statusCode: 404 };
+      return { error: 'Unauthorized', message: "패스워드가 틀렸습니다.", statusCode: 401 };
     };
 
     const accessToken = JwtService.createAccessToken({ id: users[0].id, no: users[0].no });
@@ -59,17 +59,17 @@ class AuthService {
       return { error: 'Bad Request', message: "잘못된 토큰 타입입니다.", statusCode: 400 };
     };
 
-    const refreshToken = await AuthRepository.refreshTokenCheck(clientRefreshToken); // DB상에서 토큰 여부 검사
+    const refreshToken = await AuthRepository.refreshTokenCheck(clientRefreshToken);
     if (!refreshToken) {
       return { error: 'Not Found', message: "유저의 토큰 정보가 없습니다.", statusCode: 404 };
     };
 
-    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken.refresh_token); // 받은 토큰의 유효기간 검사.
+    const userRefreshTokenPayload = JwtService.verifyRefreshToken(refreshToken.refresh_token);
     if (userRefreshTokenPayload.error) {
       return userRefreshTokenPayload;
     };
 
-    const userAccessToken = JwtService.createAccessToken({ id: userRefreshTokenPayload.id, no: userRefreshTokenPayload.no });//...userRefreshTokenCheck로 변경시 에러
+    const userAccessToken = JwtService.createAccessToken({ id: userRefreshTokenPayload.id, no: userRefreshTokenPayload.no });
     return { message: "액세스 토큰 재발급 완료됐습니다.", accessToken: userAccessToken, statusCode: 200 };
   };
 };
