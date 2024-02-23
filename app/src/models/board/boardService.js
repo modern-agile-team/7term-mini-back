@@ -22,7 +22,7 @@ export default class BoardService {
       };
     }
 
-    const appendResult = await BoardRepository.apppendBoard(
+    const appendResult = await BoardRepository.appendBoard(
       userNo,
       categoryNo,
       content
