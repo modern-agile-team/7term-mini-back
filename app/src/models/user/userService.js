@@ -69,15 +69,14 @@ class UserService {
   }
   async findUserInformation() {
     const userNo = this.user.no;
-    const userInformation = await UserRepository.findOneUser(userNo);
-    if (!userInformation[0][0]) {
+    const [rows, field] = await UserRepository.findOneUser(userNo);
+    if (!rows[0]) {
       return {
         error: "Not Found",
         message: "해당 유저가 존재하지 않습니다.",
         statuscode: 404,
       };
     }
-    const [rows, field] = await UserRepository.findOneUser(userNo);
 
     return {
       statuscode: 200,
