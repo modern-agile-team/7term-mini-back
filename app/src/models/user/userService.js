@@ -16,7 +16,7 @@ class UserService {
     if (!deleteUserResult[0]) {
       return { error: "Internal Server Error", message: "회원탈퇴에 실패하였습니다.", statuscode: 500 };
     }
-    return { statusCode: 201, message: "회원탈퇴에 성공하였습니다." };
+    return { statusCode: 200, message: "회원탈퇴에 성공하였습니다." };
   }
 
   async createUser() {
