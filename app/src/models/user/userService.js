@@ -20,6 +20,7 @@ class UserService {
         statuscode: 500,
       };
     }
+
     return {statusCode: 201, message: "회원탈퇴에 성공하였습니다."};
   }
 

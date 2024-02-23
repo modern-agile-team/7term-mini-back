@@ -30,24 +30,7 @@ class AuthService {
   async login() {
     const loginRequestBody = this.body;
 
-    if (!loginRequestBody.id) {
-      return {
-        error: "Bad Request",
-        message: "아이디가 공백입니다.",
-        statusCode: 400,
-      };
-    }
-
-    if (!loginRequestBody.password) {
-      return {
-        error: "Bad Request",
-        message: "비밀번호가 공백입니다.",
-        statusCode: 400,
-      };
-    }
-
     const [users, field] = await UserRepository.getUser(loginRequestBody.id);
-
     if (!users[0]) {
       return {
         error: "Not Found",
@@ -111,7 +94,7 @@ class AuthService {
 
     const refreshToken = await AuthRepository.refreshTokenCheck(
       clientRefreshToken
-    ); // DB상에서 토큰 여부 검사
+    );
 
     if (!refreshToken) {
       return {
@@ -123,7 +106,7 @@ class AuthService {
 
     const userRefreshTokenPayload = JwtService.verifyRefreshToken(
       refreshToken.refresh_token
-    ); // 받은 토큰의 유효기간 검사.
+    );
 
     if (userRefreshTokenPayload.error) {
       return userRefreshTokenPayload;
@@ -132,7 +115,7 @@ class AuthService {
     const accessToken = JwtService.createAccessToken({
       id: userRefreshTokenPayload.id,
       no: userRefreshTokenPayload.no,
-    }); //...userRefreshTokenCheck로 변경시 에러
+    });
 
     return {
       message: "액세스 토큰 재발급 완료됐습니다.",

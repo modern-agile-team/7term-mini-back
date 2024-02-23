@@ -7,7 +7,7 @@ export default class BoardRepository {
     return db.query(query, [boardNo]);
   }
 
-  static apppendBoard(userNo, categoryNo, content) {
+  static appendBoard(userNo, categoryNo, content) {
     const query =
       "INSERT INTO board(user_no, category_no, content) VALUES (?, ?, ?);";
 
