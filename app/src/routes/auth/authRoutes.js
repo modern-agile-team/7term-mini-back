@@ -10,6 +10,10 @@ router.post("/login", ctrl.process.login);
 
 router.get("/new-access-token", ctrl.process.newAccessToken);
 
-router.delete("/logout", authMiddleware.tokenProcess.accessToken, ctrl.process.logout);
+router.delete(
+  "/logout",
+  authMiddleware.tokenProcess.accessToken,
+  ctrl.process.logout
+);
 
 export default router;
