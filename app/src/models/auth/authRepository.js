@@ -3,21 +3,26 @@
 import db from "../../config/db.js";
 
 class AuthRepository {
-  static tokenSave(userNo, userRefreshToken) {
+  static findAccessToken(userNo) {
+    const query = "SELECT * FROM token where user_no = ?;";
+    return db.query(query, [userNo]);
+  }
+
+  static tokenSave(userNo, userRefreshToken, userAccessToken) {
     const query =
-      "INSERT INTO token (`user_no`, `refresh_token`) VALUES (?, ?)";
-    return db.query(query, [userNo, userRefreshToken]);
+      "INSERT INTO token (`user_no`, `refresh_token`, `access_token`) VALUES (?, ?, ?)";
+    return db.query(query, [userNo, userRefreshToken, userAccessToken]);
   }
 
   static async refreshTokenCheck(clientRefreshToken) {
     const query = "SELECT * FROM token WHERE refresh_token = ?;";
     const [users, field] = await db.query(query, [clientRefreshToken]);
     return users[0];
-  };
+  }
 
   static deleteRefreshToken(userNo) {
-    const query = "DELETE FROM token WHERE user_no = ?;"
+    const query = "DELETE FROM token WHERE user_no = ?;";
     return db.query(query, [userNo]);
   }
-};
+}
 export default AuthRepository;

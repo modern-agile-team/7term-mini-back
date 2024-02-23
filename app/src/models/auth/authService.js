@@ -11,15 +11,38 @@ class AuthService {
     this.params = req.params;
     this.headers = req.headers;
     this.user = req.user;
-  };
+  }
+  async checkAccessToken() {
+    const accessToken = this.user;
+
+    const [users, field] = await AuthRepository.findAccessToken(accessToken.no);
+    if (!users[0]) {
+      return {
+        error: "Not Found",
+        message: "유저의 액세스 토큰 정보가 없습니다.",
+        statusCode: 404,
+      };
+    }
+    return {
+      statusCode: 201,
+      message: "정상적인 액세스 토큰입니다.",
+    };
+  }
+
   async logout() {
     const accessToken = this.user;
-    const logoutResult = await AuthRepository.deleteRefreshToken(accessToken.no);
+    const logoutResult = await AuthRepository.deleteRefreshToken(
+      accessToken.no
+    );
     if (!logoutResult[0].affectedRows) {
-      return { error: "Internal Server Error", message: "로그아웃에 실패하였습니다.", statuscode: 500 };
+      return {
+        error: "Internal Server Error",
+        message: "로그아웃에 실패하였습니다.",
+        statuscode: 500,
+      };
     }
     return { statusCode: 201, message: "로그아웃에 성공하였습니다." };
-  };
+  }
 
   async login() {
     const loginRequestBody = this.body;
@@ -55,7 +78,7 @@ class AuthService {
       no: users[0].no,
     });
 
-    await AuthRepository.tokenSave(users[0].no, refreshToken);
+    await AuthRepository.tokenSave(users[0].no, refreshToken, accessToken);
 
     return {
       message: "로그인에 성공하였습니다.",
