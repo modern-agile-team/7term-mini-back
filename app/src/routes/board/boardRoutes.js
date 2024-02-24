@@ -6,6 +6,7 @@ import loveValidation from "./love/loveValidation.js";
 import loveCtrl from "./love/loveCtrl.js";
 import commentValidation from "./comment/commentValidation.js";
 import commentCtrl from "./comment/commentCtrl.js";
+import errorHandler from "../../middleware/errorHandler.js";
 
 const router = express.Router();
 
@@ -14,7 +15,8 @@ router.post(
   "/",
   middleware.tokenProcess.accessToken,
   boardValidation.checkBeforePost,
-  boardCtrl.appendBoard
+  boardCtrl.appendBoard,
+  errorHandler.errorHandler
 );
 
 //보드 삭제

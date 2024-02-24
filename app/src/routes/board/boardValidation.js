@@ -17,13 +17,12 @@ export default {
 
     const error = validationResult(req).errors[0];
 
-    if (error) {
-      return res
-        .status(400)
-        .json({error: "Bad Request", message: error.msg, statusCode: 400});
-    }
+    console.log(error);
+    // if (error) {
+    //   next({error: "Bad Request", message: error.msg, statusCode: 400});
+    // }
 
-    next();
+    next(error);
   },
 
   checkBeforeDelete: async (req, res, next) => {

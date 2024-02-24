@@ -14,6 +14,8 @@ export default class BoardService {
 
     const error = await BoardRepository.findCategoryNo(categoryNo);
 
+    console.log(error);
+
     if (!error[0][0]) {
       return {
         error: "Not Found",
