@@ -12,9 +12,9 @@ export default class BoardService {
     const userNo = this.user.no;
     const {categoryNo, content} = this.body;
 
-    const error = await BoardRepository.findCategoryNo(categoryNo);
+    const checkCategoryNo = await BoardRepository.findCategoryNo(categoryNo);
 
-    if (!error[0][0]) {
+    if (!checkCategoryNo[0][0]) {
       return {
         error: "Not Found",
         message: "해당 카테고리 번호는 등록되어있지 않습니다.",
