@@ -53,6 +53,7 @@ router.get(
 router.post(
   "/:boardNo/love",
   middleware.tokenProcess.accessToken,
+  loveValidation.checkBoardNo,
   loveCtrl.process.addLove
 );
 
