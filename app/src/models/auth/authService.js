@@ -12,6 +12,7 @@ class AuthService {
     this.headers = req.headers;
     this.user = req.user;
   }
+
   async checkAccessToken() {
     const accessToken = this.user;
 
@@ -41,7 +42,8 @@ class AuthService {
         statuscode: 500,
       };
     }
-    return { statusCode: 201, message: "로그아웃에 성공하였습니다." };
+
+    return {statusCode: 201, message: "로그아웃에 성공하였습니다."};
   }
 
   async login() {
