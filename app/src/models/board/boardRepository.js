@@ -44,7 +44,7 @@ export default class BoardRepository {
   static getBoardsCount(categoryNo) {
     let where = "";
 
-    if (categoryNo) {
+    if (categoryNo && categoryNo !== 5) {
       where = `WHERE board.category_no = ${categoryNo}`;
     }
 
@@ -61,12 +61,12 @@ export default class BoardRepository {
 
     let orderBy = "ORDER BY b.no DESC LIMIT ?, ?";
 
-    // 0을 주면 전체 게시글을 불러옴
-    if (categoryNo && categoryNo !== 5) {
+    // 0은 전체, 5는 인기
+    if (categoryNo && categoryNo !== 5)
       where = `WHERE b.category_no = ${categoryNo}`;
-    } else if (categoryNo === 5) {
-      orderBy = "ORDER BY love_count LIMIT ?, ?";
-    }
+
+    if (categoryNo === 5)
+      orderBy = "ORDER BY love_count DESC, created_at DESC LIMIT ?, ?";
 
     const query = `SELECT b.no, c.no as category_no, c.name as category_name, u.nickname, b.content, b.created_at, b.updated_at, 
     COUNT(DISTINCT co.no) as comment_count,

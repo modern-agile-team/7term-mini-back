@@ -152,7 +152,8 @@ export default class BoardService {
 
     const checkCategoryNo = await BoardRepository.findCategoryNo(categoryNo);
 
-    if (categoryNo !== 0) {
+    //0은 전체, 5는 인기순
+    if (categoryNo && categoryNo !== 5) {
       if (!checkCategoryNo[0][0]) {
         return {
           error: "Not Found",
