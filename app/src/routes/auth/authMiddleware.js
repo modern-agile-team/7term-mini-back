@@ -34,11 +34,11 @@ const tokenProcess = {
       );
       console.log("토큰 인증 성공", payload);
 
-      req.user = {...payload};
+      req.user = { ...payload };
       const auth = new AuthService(req);
       const response = await auth.checkAccessToken();
 
-      if (response.statusCode === 404) {
+      if (response.statusCode === 401) {
         return res.status(response.statusCode).json(response);
       }
       next();

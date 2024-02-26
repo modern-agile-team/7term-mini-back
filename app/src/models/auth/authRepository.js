@@ -3,7 +3,7 @@
 import db from "../../config/db.js";
 
 class AuthRepository {
-  static findAccessToken(userNo) {
+  static findToken(userNo) {
     const query = "SELECT * FROM token where user_no = ?;";
     return db.query(query, [userNo]);
   }
@@ -14,13 +14,13 @@ class AuthRepository {
     return db.query(query, [userNo, userRefreshToken, userAccessToken]);
   }
 
-  static async refreshTokenCheck(clientRefreshToken) {
+  static async refreshTokenFind(clientRefreshToken) {
     const query = "SELECT * FROM token WHERE refresh_token = ?;";
     const [users, field] = await db.query(query, [clientRefreshToken]);
     return users[0];
   }
 
-  static deleteRefreshToken(userNo) {
+  static deleteToken(userNo) {
     const query = "DELETE FROM token WHERE user_no = ?;";
     return db.query(query, [userNo]);
   }
