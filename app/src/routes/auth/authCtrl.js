@@ -1,6 +1,6 @@
 "use strict";
 
-import AuthService from "../../models/auth/authService.js"
+import AuthService from "../../models/auth/authService.js";
 
 const process = {
   login: async (req, res) => {
@@ -16,8 +16,13 @@ const process = {
   logout: async (req, res) => {
     const auth = new AuthService(req);
     const response = await auth.logout();
-    return res.json(response).status(response.statusCode)
-  }
+    return res.json(response).status(response.statusCode);
+  },
+  checkToken: async (req, res) => {
+    const auth = new AuthService(req);
+    const response = await auth.checkAccessToken();
+    return res.json(response).status(response.statusCode);
+  },
 };
 export default {
   process,
