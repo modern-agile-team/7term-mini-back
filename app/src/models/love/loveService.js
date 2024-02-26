@@ -11,7 +11,7 @@ class LoveService {
   }
   async addLove() {
     const userNo = this.user.no;
-    const boardNo = this.params.board_no;
+    const boardNo = this.params.boardNo;
     const loveNoAndUserNo = await LoveRepository.selectLoveNoAndUserNo(
       boardNo,
       userNo
@@ -46,7 +46,7 @@ class LoveService {
 
   async deleteLove() {
     const userNo = this.user.no;
-    const boardNo = this.params.board_no;
+    const boardNo = this.params.boardNo;
     const loveNoAndUserNo = await LoveRepository.selectLoveNoAndUserNo(
       boardNo,
       userNo
