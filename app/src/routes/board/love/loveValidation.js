@@ -2,7 +2,7 @@ import {param, validationResult} from "express-validator";
 
 export default {
   checkBoardNo: async (req, res, next) => {
-    await param("board_no", "게시글 고유번호는 자연수이어야 합니다.")
+    await param("boardNo", "게시글 고유번호는 자연수이어야 합니다.")
       .isInt({min: 1})
       .run(req);
 

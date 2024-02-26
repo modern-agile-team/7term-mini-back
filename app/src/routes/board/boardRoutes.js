@@ -51,14 +51,15 @@ router.get(
 
 //좋아요 생성
 router.post(
-  "/:board_no/love",
+  "/:boardNo/love",
   middleware.tokenProcess.accessToken,
+  loveValidation.checkBoardNo,
   loveCtrl.process.addLove
 );
 
 //좋아요 삭제
 router.delete(
-  "/:board_no/love",
+  "/:boardNo/love",
   middleware.tokenProcess.accessToken,
   loveValidation.checkBoardNo,
   loveCtrl.process.deleteLove
