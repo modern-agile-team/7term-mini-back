@@ -31,9 +31,7 @@ class AuthService {
 
   async logout() {
     const user = this.user;
-    const logoutResult = await AuthRepository.deleteToken(
-      user.no
-    );
+    const logoutResult = await AuthRepository.deleteToken(user.no);
     if (!logoutResult[0].affectedRows) {
       return {
         error: "Internal Server Error",
