@@ -110,7 +110,7 @@ class AuthService {
       };
     }
 
-    const refreshToken = await AuthRepository.refreshTokenCheck(
+    const refreshToken = await AuthRepository.refreshTokenFind(
       clientRefreshToken
     );
 
