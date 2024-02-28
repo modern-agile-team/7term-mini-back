@@ -28,6 +28,12 @@ export default {
       })
       .run(req);
 
+    await param("commentPage", "댓글 페이지 번호는 자연수여야합니다.")
+      .isInt({
+        min: 1,
+      })
+      .run(req);
+
     const error = validationResult(req).errors[0];
     if (error) {
       return res

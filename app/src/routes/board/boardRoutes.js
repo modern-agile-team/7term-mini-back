@@ -75,7 +75,7 @@ router.post(
 
 //댓글 조회
 router.get(
-  "/:boardNo/comments",
+  "/:boardNo/comments/:commentPage",
   middleware.tokenProcess.accessToken,
   commentValidation.checkGetComments,
   commentCtrl.process.getComments
