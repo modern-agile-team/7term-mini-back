@@ -14,10 +14,13 @@ class CommentRepository {
     return db.query(query, [commentNo]);
   }
 
-  static getComments(boardNo) {
-    const query =
-      "select * , (select count(*) from comment where board_no = ?) as comment_count from comment where board_no =?;";
-    return db.query(query, [boardNo, boardNo]);
+  static getComments(boardNo, commentPage) {
+    const query = `select c.no, c.board_no, u.nickname, c.user_no, c.content, c.created_at
+    from comment as c
+    LEFT JOIN user as u
+    ON c.user_no = u.no
+    where board_no = ? limit ?, 2;`;
+    return db.query(query, [boardNo, commentPage]);
   }
 
   static checkCommentNo(commentNo) {
@@ -33,6 +36,11 @@ class CommentRepository {
   static checkCommentOwner(userNo, commentNo) {
     const query = "select user_no from comment where user_no=? and no = ?;";
     return db.query(query, [userNo, commentNo]);
+  }
+  static getCommentCount(boardNo) {
+    const query =
+      "SELECT count(*) as commentCount FROM comment WHERE board_no = ?;";
+    return db.query(query, [boardNo]);
   }
 }
 

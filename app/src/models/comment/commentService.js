@@ -74,6 +74,8 @@ class CommentService {
   async getComments() {
     const boardNo = this.params.boardNo;
 
+    const commentPage = (this.params.commentPage - 1) * 2;
+
     let error = await BoardRepository.findOneBoard(boardNo);
 
     if (!error[0][0]) {
@@ -84,9 +86,18 @@ class CommentService {
       };
     }
 
-    const [rows, fields] = await CommentRepository.getComments(boardNo);
+    const commentCount = (
+      await CommentRepository.getCommentCount(boardNo)
+    )[0][0].commentCount;
 
-    return {statuscode: 200, rows};
+    const allCommentPages = Math.ceil(commentCount / 2);
+
+    const [comments, fields] = await CommentRepository.getComments(
+      boardNo,
+      commentPage
+    );
+
+    return {statuscode: 200, comments, allCommentPages, commentCount};
   }
 }
 
