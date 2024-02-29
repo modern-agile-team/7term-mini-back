@@ -19,7 +19,8 @@ class CommentRepository {
     from comment as c
     LEFT JOIN user as u
     ON c.user_no = u.no
-    where board_no = ? limit ?, 2;`;
+    where board_no = ? 
+    order by c.created_at desc limit ?, 2;`;
     return db.query(query, [boardNo, commentPage]);
   }
 
