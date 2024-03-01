@@ -1,4 +1,5 @@
 import BoardRepository from "./boardRepository.js";
+import LoveRepository from "../love/loveRepository.js";
 
 export default class BoardService {
   constructor(req) {
@@ -76,6 +77,7 @@ export default class BoardService {
 
   async findOneBoardWithNicknameAndLoveCount() {
     const boardNo = this.params.boardNo;
+    const userNo = this.user.no;
 
     const [rows, fields] =
       await BoardRepository.findOneBoardWithNicknameAndLoveCount(boardNo);
@@ -88,7 +90,15 @@ export default class BoardService {
       };
     }
 
-    return {board: rows[0], statusCode: 200};
+    const userLoveMark = (
+      await LoveRepository.selectLoveNoAndUserNo(boardNo, userNo)
+    )[0][0];
+
+    if (userLoveMark) {
+      return {board: rows[0], userLoveMark: 1, statusCode: 200};
+    }
+
+    return {board: rows[0], userLoveMark: 0, statusCode: 200};
   }
 
   async updateBoard() {
