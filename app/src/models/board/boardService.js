@@ -152,6 +152,7 @@ export default class BoardService {
   }
 
   async getBoardsAndLoveCountAndCommentCount() {
+    const userNo = this.user.no;
     const pageSize = Number(this.query.pageSize);
     const categoryNo = Number(this.query.categoryNo);
     const currentPage = (Number(this.query.currentPage) - 1) * pageSize;
@@ -180,6 +181,23 @@ export default class BoardService {
         categoryNo
       );
 
-    return {boards: rows, wholePage: numberAllPages, statusCode: 200};
+    let userLoveMark = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      if (
+        (await LoveRepository.selectLoveNoAndUserNo(rows[i].no, userNo))[0][0]
+      ) {
+        userLoveMark[i] = 1;
+      } else {
+        userLoveMark[i] = 0;
+      }
+    }
+
+    return {
+      boards: rows,
+      userLoveMark,
+      wholePage: numberAllPages,
+      statusCode: 200,
+    };
   }
 }
